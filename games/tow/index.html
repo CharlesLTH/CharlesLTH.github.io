@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <title>侠客风云传 资料集合</title>
+  <style>
+
+    @font-face {
+      font-family: dFont;
+      src: url('./fonts/LXGWWenKaiLite-Regular.ttf');
+    }
+    body {
+      margin: 0;
+      padding: 0;
+	  font-family: dFont;
+    }
+
+    .main1, .main2 {
+      height: 100vh;
+    }
+
+    .timeline {
+      position: relative;
+      height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 20px; /* 增加轴的宽度 */
+      margin-left: 0; /* 默认左边距为0 */
+    }
+
+    .timeline-line {
+      position: absolute;
+      width: 2px; /* 轴线更细 */
+      height: 100vh; /* 屏幕高度的100% */
+      background-color: #ccc; /* 灰色 */
+      left: 50%; /* 居中 */
+      transform: translateX(-50%);
+    }
+
+    .timeline-description {
+      position: absolute;
+      max-width: 200px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #fff;
+      cursor: pointer;
+      transform: translateY(-50%);
+      left: calc(50% + 20px); /* 调整位置到圆点右侧 */
+      z-index: 1; /* 确保在timeline-item之上 */
+      transition: background-color 0.3s ease; /* 添加渐变效果 */
+    }
+
+    .timeline-description:hover {
+      background-color: #e0e0e0; /* 鼠标悬停时稍微加深底色 */
+    }
+
+    .timeline-description1 {
+      position: relative;
+      max-width: 300px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #fff;
+      cursor: pointer;
+      transform: translateY(-50%);
+      left: calc(36%);
+      z-index: 1; /* 确保在timeline-item之上 */
+      transition: background-color 0.3s ease; /* 添加渐变效果 */
+    }
+
+    .timeline-description1:hover {
+      background-color: #e0e0e0; /* 鼠标悬停时稍微加深底色 */
+    }
+
+    .timeline-item {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background-color: #ABA7A7; /* 灰色 */
+      border-radius: 50%;
+      cursor: pointer;
+      transform: translate(-50%, -50%); /* 移动到圆心在时间轴上 */
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    h3 {
+      margin-left: 35%;
+    }
+
+    /* 添加媒体查询 */
+    @media (max-width: 768px) {
+      .timeline {
+        margin-left: -70px; /* 调整左边距，整体向左移动 */
+      }
+      .main1 {
+        margin-left: -70px; /* 调整左边距，整体向左移动 */
+      }
+    }
+    
+    @media (min-width: 768px) {
+      body {
+        width: 60%; /* 设置整个页面宽度为60% */
+        margin: 0 auto; /* 居中显示 */
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="title">
+        <div><br></div>
+        <h1><b>侠客风云传 资料集合</b></h1>
+      </div>
+      <div>
+        <h1><br></h1>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="main1">
+        <div class="low_title"><h3>物品资料</h3></div>
+        <a href="./8.html" target="_blank" class="timeline-description1" style="top:3%; color:#696969; text-decoration:none;">全装备数据</a>
+        <div><br></div>
+        <a href="./8.html" target="_blank" class="timeline-description1" style="top:3%; color:#696969; text-decoration:none;">全送礼数据</a>
+        <div><br><br></div>
+        <div class="low_title"><h3>武功资料</h3></div>
+        <a href="./w01.html" target="_blank" class="timeline-description1" style="top:3%; color:#696969; text-decoration:none;">全功体数据</a>
+        <div><br></div>
+        <a href="./w02.html" target="_blank" class="timeline-description1" style="top:3%; color:#696969; text-decoration:none;">全拳法数据</a>
+        <a href="./w03.html" target="_blank" class="timeline-description1" style="top:3%; color:#696969; text-decoration:none;">全指爪数据</a>
+        <div><br></div>
+        <a href="./w04.html" target="_blank" class="timeline-description1" style="top:3%; color:#696969; text-decoration:none;">全剑法数据</a>
+        <a href="./w05.html" target="_blank" class="timeline-description1" style="top:3%; color:#696969; text-decoration:none;">全刀法数据</a>
+        <div><br></div>
+        <a href="./w06.html" target="_blank" class="timeline-description1" style="top:3%; color:#696969; text-decoration:none;">全棍法数据</a>
+        <a href="./w07.html" target="_blank" class="timeline-description1" style="top:3%; color:#696969; text-decoration:none;">全腿法数据</a>
+        <div><br></div>
+        <a href="./w08.html" target="_blank" class="timeline-description1" style="top:3%; color:#696969; text-decoration:none;">全暗器数据</a>
+        <a href="./w09.html" target="_blank" class="timeline-description1" style="top:3%; color:#696969; text-decoration:none;">全短柄数据</a>
+        <div><br></div>
+        <a href="./w10.html" target="_blank" class="timeline-description1" style="top:3%; color:#696969; text-decoration:none;">全琴功数据</a>
+        <a href="./w11.html" target="_blank" class="timeline-description1" style="top:3%; color:#696969; text-decoration:none;">全双武数据</a>
+        <div><br><br></div>
+        <div class="low_title"><h3>地区攻略</h3></div>
+        <a href="./w10.html" target="_blank" class="timeline-description1" style="top:3%; color:#696969; text-decoration:none;">杜康村</a>
+        <a href="./w11.html" target="_blank" class="timeline-description1" style="top:3%; color:#696969; text-decoration:none;">洛阳祝寿</a>
+        <div><br></div>
+        <a href="./w10.html" target="_blank" class="timeline-description1" style="top:3%; color:#696969; text-decoration:none;">杭州旅游</a>
+        <a href="./w11.html" target="_blank" class="timeline-description1" style="top:3%; color:#696969; text-decoration:none;">成都送礼</a>
+        <div><br></div>
+        <a href="./w11.html" target="_blank" class="timeline-description1" style="top:3%; color:#696969; text-decoration:none;">大地图</a>
+        <div><br><br></div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="main2">
+        <div class="low_title"><h3>养成模式</h3></div>
+        <div class="container">
+          <div class="row">
+            <div class="col-md-10 timeline">
+              <div class="timeline-line"></div>
+              <a href="./1.html" target="_blank" class="timeline-description" style="left: calc(50% + 20px); top: 08%; color:#696969; text-decoration:none;">第1年9月<br>拜入逍遥谷</a>
+              <a href="./2.html" target="_blank" class="timeline-description" style="left: calc(50% + 20px); top: 20%; color:#696969; text-decoration:none;">第2年3月<br>洛阳祝寿</a>
+              <a href="./3.html" target="_blank" class="timeline-description" style="left: calc(50% + 20px); top: 32%; color:#696969; text-decoration:none;">第2年5月<br>忘忧谷送茶</a>
+              <a href="./4.html" target="_blank" class="timeline-description" style="left: calc(50% + 20px); top: 44%; color:#696969; text-decoration:none;">第2年8月<br>利空闯少林</a>
+              <a href="./5.html" target="_blank" class="timeline-description" style="left: calc(50% + 20px); top: 56%; color:#696969; text-decoration:none;">第2年11月<br>杭州旅游</a>
+              <a href="./6.html" target="_blank" class="timeline-description" style="left: calc(50% + 20px); top: 68%; color:#696969; text-decoration:none;">第3年2月<br>大破黑风寨</a>
+              <a href="./7.html" target="_blank" class="timeline-description" style="left: calc(50% + 20px); top: 80%; color:#696969; text-decoration:none;">第3年5月<br>成都送礼</a>
+              <a href="./8.html" target="_blank" class="timeline-description" style="left: calc(50% + 20px); top: 92%; color:#696969; text-decoration:none;">第4年1月<br>少年英雄会</a>
+              <!-- Add more timeline items as needed -->
+              <div class="timeline-item" style="top: 08%; left: 50%;"></div>
+              <div class="timeline-item" style="top: 20%; left: 50%;"></div>
+              <div class="timeline-item" style="top: 32%; left: 50%;"></div>
+              <div class="timeline-item" style="top: 44%; left: 50%;"></div>
+              <div class="timeline-item" style="top: 56%; left: 50%;"></div>
+              <div class="timeline-item" style="top: 68%; left: 50%;"></div>
+              <div class="timeline-item" style="top: 80%; left: 50%;"></div>
+              <div class="timeline-item" style="top: 92%; left: 50%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div><br><br><br><br><br></div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

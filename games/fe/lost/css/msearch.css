@@ -1,0 +1,7 @@
+#search_box { opacity: 0.8; text-align:center; position: relative; z-index: 10; }
+#search_btn { background: #0f79be; margin-top: 6px; border-radius: 12px; border: 0px; 
+width: 100px; line-height: 48px; color: white; font-size: 20px; }
+#searchstr { font-size: 20px; height: 48px; }
+.highlight { background: yellow; color: red; }
+#tip { background: #ffc; border: 1px solid #999; width: 110px; text-align: center; 
+display: none; font-size: 12px; }

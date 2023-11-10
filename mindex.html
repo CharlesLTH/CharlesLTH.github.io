@@ -1,0 +1,79 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Charles Lu's main page</title>
+    <link rel="icon" type="image/x-icon" href="https://CharlesLTH.github.io/Christa.ico"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Black+Ops+One">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Luckiest+Guy">
+    <link rel="stylesheet" type="text/css" href="css/effect-3d.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery.let_it_snow.js"></script>
+    <style>
+       body {
+        text-align: center;
+        background-image: url(bg.jpg);
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+   .LTH {
+        position: relative;
+        z-index: 10;
+    }  
+      .font-effect-3d {
+        font-family: 'Black Ops One', serif;
+        font-size: 80px;
+        color: #E0EEE0;
+      }    	
+
+      .link {
+      	font-family: 'Luckiest Guy', serif;
+        text-decoration: none;
+        font-size: 60px;
+        color: #E0EEE0;
+      }  
+	  .pic{		
+        width: auto;
+        height: auto;
+		text-align:center;
+		display:flex;
+        align-items:center; 
+        justify-content:center;			
+      }     
+	  .pic img{
+        width:50%;
+        height:auto;
+	  }      
+    </style>
+
+  </head>
+
+  <body>
+  	<div class="LTH">
+  	<p class="font-effect-3d" align="center"><br>Welcome to LTH's Website !</p>
+  	   <br><br><br><br><br><br>
+  	<p class="font-effect-3d" align="center">
+    	<a class="link" href="https://CharlesLTH.github.io/games/index.html" target="_blank">LTH's Game Site</a><br><br>
+    </p>
+  	   <div class="pic">
+		   <img src="LTH.png"  alt="Charles Lu" draggable="false" oncontextmenu="return false" />
+       </div>
+    </div>
+
+
+  <!------------下雪------------>
+  <!------------下雪------------>
+       <div class="main">
+         <div class="page_container">
+           <canvas width="100%" height="100%" class="snow"></canvas>
+         </div>
+       </div>
+       <script type="text/javascript">
+       $(document).ready( function() {
+         $("canvas.snow").let_it_snow();
+       });
+       </script>
+  <!------------下雪------------>
+  <!------------下雪------------>
+  </body>
+</html>
