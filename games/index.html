@@ -1,0 +1,131 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Charles Lu's Game Site</title>
+    <link rel="icon" type="image/x-icon" href="https://CharlesLTH.github.io/Christa.ico"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Black+Ops+One">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Share+Tech+Mono">
+    <link rel="stylesheet" type="text/css" href="css/effect-3d.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery.let_it_snow.js"></script>
+    <script type="text/javascript">
+        try {
+        var urlhash = window.location.hash;
+        if (!urlhash.match("fromapp"))
+        {
+        if ((navigator.userAgent.match(/(iPhone|iPod|Android|ios|iPad)/i)))
+        {
+        window.location="https://CharlesLTH.github.io/games/mindex.html";
+        }
+        }
+        }
+        catch(err)
+        {
+        }
+    </script>
+    <style>
+   a:hover {
+        color:#FFD700;
+      }
+
+   body {
+        text-align: center;
+        background-image: url(pic/bg.jpg);
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+
+   .LTH {
+        position: relative;
+        z-index: 10;
+    }   
+
+   .font-effect-3d {
+        font-family: 'Black Ops One', serif;
+        font-size: 60px;
+        color: #E5E5E5;
+        text-decoration: none;
+    }    	
+   
+   .pic img{
+        width:20%;
+        height:auto;
+    }      
+
+   .pic {
+        text-decoration: none;
+    }
+
+   .home {
+       font-family: 'Share Tech Mono', serif;
+       font-size: 40px;
+    }
+    /*图片放大*/
+    img{
+       transition: all 0.2s;
+       opacity:0.5;//透明度设置
+    }
+    img:hover{
+       transform: scale(1.2);
+       opacity:1;//透明度设置
+    }
+    /*图片放大*/
+    </style>
+    <style type="text/css">
+        * {  
+            margin: 0px;  
+            padding: 0px;  
+            z-index: 5;
+        }  
+        video{  
+            position: fixed;  
+            right: 0px;  
+            bottom: 0px;  
+            min-width: 100%;  
+            min-height: 100%;  
+            height: auto;  
+            width: auto;  
+            /*加滤镜*/  
+            /*-webkit-filter: grayscale(100%);*/  
+            /*filter:grayscale(100%);*/  
+        }  
+        source{  
+            min-width: 100%;  
+            min-height: 100%;  
+            height: auto;  
+            width: auto;  
+        }  
+    </style>
+  </head>
+
+  <body>
+    <div class="LTH">
+  	   <p class="font-effect-3d" align="center"><br>Welcome to LTH's Game Site !</p><br><br><br>
+	     <a class="pic" href="BoTW/index.html" target="_blank" ><img src="pic/botw.png" alt="BoTW" draggable="false" oncontextmenu="return false" /></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+       <a class="pic" href="mhxx/index.html" target="_blank" ><img src="pic/mhxx.png" alt="MHXX" draggable="false" oncontextmenu="return false" /></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+       <a class="pic" href="fe/index.html" target="_blank" ><img src="pic/fe.png" alt="fe" draggable="false" oncontextmenu="return false" /></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+       <a class="pic" href="ToW/index.html" target="_blank" ><img src="pic/tow.png" alt="ToW" draggable="false" oncontextmenu="return false" /></a><br><br><br><br><br>
+       <a class="font-effect-3d" href="https://CharlesLTH.github.io/" target="_blank" ><p class="home">Click to LTH's home page</p></a>
+    </div> 
+    <!--  
+        <video autoplay="autoplay" loop="loop">  
+           <source  src="video/Mipha.mp4" type="video/mp4" >
+        </video>
+    -->    
+  <!------------下雪------------>
+  <!------------下雪------------>
+       <div class="main">
+         <div class="page_container">
+           <canvas width="100%" height="100%" class="snow"></canvas>
+         </div>
+       </div>
+       <script type="text/javascript">
+       $(document).ready( function() {
+         $("canvas.snow").let_it_snow();
+       });
+       </script>
+  <!------------下雪------------>
+  <!------------下雪------------>
+  </body>
+</html>
