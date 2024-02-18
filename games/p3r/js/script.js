@@ -40,15 +40,15 @@ function sortTable(columnIndex) {
 }
 
 function updateSortArrows() {
-    // 清除所有箭头状态
-    document.querySelectorAll('.sortable .sort-arrow').forEach((arrow) => {
-        arrow.textContent = '↕'; // 重置为默认双向箭头
+    // 重置所有箭头为默认状态
+    document.querySelectorAll('.sortable .sort-arrow').forEach(arrow => {
+        arrow.textContent = '↕'; // 未排序状态的箭头
     });
 
-    // 更新当前排序列的箭头
-    const arrows = document.querySelectorAll('.sortable .sort-arrow');
-    if (arrows[currentSortColumn]) {
-        arrows[currentSortColumn].textContent = currentSortOrder === 'asc' ? '↑' : '↓';
+    // 找到当前排序列并更新箭头
+    const sortedColumnArrow = document.querySelector('.sortable[onclick*="sortTable(' + currentSortColumn + ')"] .sort-arrow');
+    if (sortedColumnArrow) {
+        sortedColumnArrow.textContent = currentSortOrder === 'asc' ? '↑' : '↓';
     }
 }
 
