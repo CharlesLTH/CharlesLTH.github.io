@@ -42,9 +42,9 @@ function sortTable(columnIndex) {
 function updateSortArrows() {
     document.querySelectorAll('.sortable .sort-arrow').forEach((arrow, index) => {
         if (index === currentSortColumn) {
-            arrow.textContent = currentSortOrder === 'asc' ? '▲' : '▼';
+            arrow.textContent = currentSortOrder === 'asc' ? '↑' : '↓';
         } else {
-            arrow.textContent = '▲▼';
+            arrow.textContent = '↕';
         }
     });
 }

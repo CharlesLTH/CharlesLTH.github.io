@@ -1,3 +1,12 @@
+@font-face {
+    font-family: 'LXGW';
+    src: url('../fonts/LXGWBrightGB-Medium.ttf') format('truetype');
+}
+
+body {
+    font-family: 'LXGW', sans-serif;
+}
+
 /* 表格容器样式 */
 .table-container {
     overflow-x: auto;
@@ -58,7 +67,7 @@
 }
 
 #excelTable th:nth-child(4), #excelTable td:nth-child(4) {
-    width: 60px; /* 第四列的宽度 */
+    width: 50px; /* 第四列的宽度 */
 }
 
 #excelTable th:nth-child(5), #excelTable td:nth-child(5) {
@@ -66,7 +75,7 @@
 }
 
 #excelTable th:nth-child(6), #excelTable td:nth-child(6) {
-    width: 60px; /* 第六列的宽度 */
+    width: 50px; /* 第六列的宽度 */
 }
 
 #excelTable th:nth-child(7), #excelTable td:nth-child(7) {
@@ -82,7 +91,7 @@
 }
 
 #excelTable th:nth-child(10), #excelTable td:nth-child(10) {
-    width: 60px; /* 第十列的宽度 */
+    width: 50px; /* 第十列的宽度 */
 }
 
 /* 调整箭头符号的位置 */
