@@ -19,7 +19,7 @@
             justify-content: center; /* Center items vertically */
             height: 100vh;
         }
-    
+
         h1 {
             position: absolute;
             right: 20px; /* Slightly to the left */
@@ -33,14 +33,14 @@
             white-space: nowrap; /* Ensure the title is on one line */
             margin: 0;
         }
-    
+
         .section-container {
             display: flex;
             flex-direction: column; /* Arrange sections in a column */
             align-items: center; /* Center sections horizontally */
             gap: 10px; /* Reduced gap between sections */
         }
-    
+
         .section {
             font-size: 1.5em;
             font-weight: bold;
@@ -54,40 +54,61 @@
             transition: background-color 0.3s ease, transform 0.3s ease;
             margin: 5px 0; /* Reduced vertical spacing */
         }
-    
+
         .section a {
             color: #ffffff; /* 白色文本 */
             text-decoration: none; /* 去掉下划线 */
             display: block; /* 让链接填满整个容器 */
             transition: color 0.3s ease; /* 颜色变化的过渡效果 */
         }
-    
+
         .section:hover {
             transform: scale(1.1) skew(-10deg, -8deg);
         }
-    
+
         .section:hover a {
             color: #000000; /* 悬停时的黑色文本 */
         }
-    
-        .section::before {
+
+        .section::before, .section::after {
             content: '';
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%) scale(0);
             width: 100%;
             height: 100%;
-            background-color: #ffffff;
-            opacity: 0;
             transition: opacity 0.3s ease, transform 0.3s ease;
             clip-path: polygon(50% 0, 0% 100%, 100% 100%);
+        }
+
+        .section::before {
+            /* This is the white triangle on top */
+            transform: translate(-50%, -50%) scale(0);
+            background-color: #ffffff; /* White color */
+            opacity: 0;
             z-index: -1;
         }
-    
-        .section:hover::before {
+
+        .section::after {
+            /* This is the larger purple triangle beneath */
+            transform: translate(-50%, -50%) scale(1.00) rotate(0deg);
+            background-color: #fe21a5; /* Purple color */
+            opacity: 0; /* Start fully transparent */
+            z-index: -2; /* Ensure it's below the white triangle */
+        }
+
+        .section:hover::before, .section:hover::after {
             opacity: 1;
+        }
+
+        .section:hover::before {
+            /* The white triangle scales to normal size on hover */
             transform: translate(-50%, -50%) scale(1);
+        }
+
+        .section:hover::after {
+            /* The purple triangle becomes visible and scales up a bit more on hover */
+            transform: translate(-50%, -50%) scale(1.10) rotate(6deg);
         }
     </style>
 </head>
