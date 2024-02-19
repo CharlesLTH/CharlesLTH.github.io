@@ -22,6 +22,15 @@
             height: 100vh;
         }
 
+        .page_container {
+            position: absolute; /* 使其脱离文档流 */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1; /* 在背景上方，其他元素下方 */
+    }
+
         h1 {
             position: absolute;
             right: 20px; /* Slightly to the left */
@@ -34,6 +43,7 @@
             color: #000000; /* Black color */
             white-space: nowrap; /* Ensure the title is on one line */
             margin: 0;
+            z-index: 2;
         }
 
         .section-container {
@@ -41,6 +51,7 @@
             flex-direction: column; /* Arrange sections in a column */
             align-items: center; /* Center sections horizontally */
             gap: 10px; /* Reduced gap between sections */
+            z-index: 2;
         }
 
         .section {
