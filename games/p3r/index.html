@@ -4,105 +4,102 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Style Webpage</title>
-<style>
-    body {
-        background-image: url('./pic/bg.png'); /* 背景图片路径 */
-        background-size: cover; /* 覆盖整个屏幕，保持长宽比 */
-        background-position: center; /* 居中显示 */
-        background-repeat: no-repeat; /* 不重复 */
-        font-family: 'Arial', sans-serif;
-        margin: 0;
-        padding: 0;
-        display: flex;
-        flex-direction: column; /* Stack elements vertically */
-        align-items: center; /* Center items horizontally */
-        justify-content: center; /* Center items vertically */
-        height: 100vh;
-    }
-
-    h1 {
-        position: absolute;
-        right: 20px; /* Slightly to the left */
-        top: 50%;
-        transform: translate(0%, -60%) rotate(90deg); /* Rotate and position the title, move down a bit more */
-        transform-origin: top right;
-        font-size: 4em; /* Larger font size */
-        font-weight: bold;
-        font-family: 'Arial Black', Gadget, sans-serif; /* Bold, black font */
-        color: #000000; /* Black color */
-        white-space: nowrap; /* Ensure the title is on one line */
-        margin: 0;
-    }
-
-    .section-container {
-        display: flex;
-        flex-direction: column; /* Arrange sections in a column */
-        align-items: center; /* Center sections horizontally */
-        gap: 10px; /* Reduced gap between sections */
-    }
-
-    .section {
-        font-size: 1.5em;
-        font-weight: bold;
-        font-family: 'Arial Black', Gadget, sans-serif;
-        padding: 10px;
-        position: relative;
-        cursor: pointer;
-        z-index: 2;
-        background-color: transparent; /* 透明背景 */
-        transform: skew(-10deg, -8deg);
-        transition: background-color 0.3s ease, transform 0.3s ease;
-        margin: 5px 0; /* Reduced vertical spacing */
-    }
-
-    .section a {
-        color: #ffffff; /* 白色文本 */
-        text-decoration: none; /* 去掉下划线 */
-        display: block; /* 让链接填满整个容器 */
-        transition: color 0.3s ease; /* 颜色变化的过渡效果 */
-    }
-
-    .section:hover {
-        transform: scale(1.1) skew(-10deg, -8deg);
-    }
-
-    .section:hover a {
-        color: #000000; /* 悬停时的黑色文本 */
-    }
-
-    .section::before {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%) scale(0);
-        width: 100%;
-        height: 100%;
-        background-color: #ffffff;
-        opacity: 0;
-        transition: opacity 0.3s ease, transform 0.3s ease;
-        clip-path: polygon(50% 0, 0% 100%, 100% 100%);
-        z-index: -1;
-    }
-
-    .section:hover::before {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1);
-    }
-
-    /* ... [其他样式保持不变] ... */
-</style>
+    <style>
+        body {
+            background-image: url('./pic/bg.jpeg'); /* 背景图片路径 */
+            background-size: cover; /* 覆盖整个屏幕，保持长宽比 */
+            background-position: center; /* 居中显示 */
+            background-repeat: no-repeat; /* 不重复 */
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column; /* Stack elements vertically */
+            align-items: center; /* Center items horizontally */
+            justify-content: center; /* Center items vertically */
+            height: 100vh;
+        }
+    
+        h1 {
+            position: absolute;
+            right: 20px; /* Slightly to the left */
+            top: 60%;
+            transform: translate(0%, -60%) rotate(90deg); /* Rotate and position the title, move down a bit more */
+            transform-origin: top right;
+            font-size: 4em; /* Larger font size */
+            font-weight: bold;
+            font-family: 'Arial Black', Gadget, sans-serif; /* Bold, black font */
+            color: #000000; /* Black color */
+            white-space: nowrap; /* Ensure the title is on one line */
+            margin: 0;
+        }
+    
+        .section-container {
+            display: flex;
+            flex-direction: column; /* Arrange sections in a column */
+            align-items: center; /* Center sections horizontally */
+            gap: 10px; /* Reduced gap between sections */
+        }
+    
+        .section {
+            font-size: 1.5em;
+            font-weight: bold;
+            font-family: 'Arial Black', Gadget, sans-serif;
+            padding: 10px;
+            position: relative;
+            cursor: pointer;
+            z-index: 2;
+            background-color: transparent; /* 透明背景 */
+            transform: skew(-10deg, -8deg);
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            margin: 5px 0; /* Reduced vertical spacing */
+        }
+    
+        .section a {
+            color: #ffffff; /* 白色文本 */
+            text-decoration: none; /* 去掉下划线 */
+            display: block; /* 让链接填满整个容器 */
+            transition: color 0.3s ease; /* 颜色变化的过渡效果 */
+        }
+    
+        .section:hover {
+            transform: scale(1.1) skew(-10deg, -8deg);
+        }
+    
+        .section:hover a {
+            color: #000000; /* 悬停时的黑色文本 */
+        }
+    
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            clip-path: polygon(50% 0, 0% 100%, 100% 100%);
+            z-index: -1;
+        }
+    
+        .section:hover::before {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+    </style>
 </head>
 <body>
     <h1>Main Title</h1>
-<div class="section-container">
-    <div class="section"><a href="./skills.html">物理技能</a></div>
-    <div class="section"><a href="#section2">Section 2</a></div>
-    <div class="section"><a href="#section3">Section 3</a></div>
-    <div class="section"><a href="#section4">Section 4</a></div>
-    <div class="section"><a href="#section5">Section 5</a></div>
-</div>
-
+    <div class="section-container">
+        <div class="section"><a href="./phy_skills.html">物理技能</a></div>
+        <div class="section"><a href="#section2">Section 2</a></div>
+        <div class="section"><a href="#section3">Section 3</a></div>
+        <div class="section"><a href="#section4">Section 4</a></div>
+        <div class="section"><a href="#section5">Section 5</a></div>
+    </div>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const sections = document.querySelectorAll('h2 a');
