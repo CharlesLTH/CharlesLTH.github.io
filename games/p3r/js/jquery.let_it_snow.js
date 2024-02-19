@@ -17,7 +17,7 @@
   var defaults = {
     speed: 0,
     interaction: true,
-    size: 7,
+    size: 3,
     count: 200,
     opacity: 0,
     color: "#ffffff",
