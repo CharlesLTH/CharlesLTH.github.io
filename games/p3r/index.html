@@ -8,7 +8,7 @@
     <title>Style Webpage</title>
     <style>
         body {
-            background-image: url('./pic/bg.jpeg'); /* 背景图片路径 */
+            background-image: url('./pic/bg.webp'); /* 背景图片路径 */
             background-size: cover; /* 覆盖整个屏幕，保持长宽比 */
             background-position: center; /* 居中显示 */
             background-repeat: no-repeat; /* 不重复 */
@@ -29,7 +29,7 @@
             width: 100%;
             height: 100%;
             z-index: 1; /* 在背景上方，其他元素下方 */
-    }
+        }
 
         h1 {
             position: absolute;
@@ -37,10 +37,11 @@
             top: 60%;
             transform: translate(0%, -60%) rotate(90deg); /* Rotate and position the title, move down a bit more */
             transform-origin: top right;
-            font-size: 4em; /* Larger font size */
+            font-size: 3em; /* Smaller font size */
             font-weight: bold;
             font-family: 'Arial Black', Gadget, sans-serif; /* Bold, black font */
-            color: #000000; /* Black color */
+            color: #ffffff; /* Change text color to white */
+            text-shadow: 0 0 10px #add8e6; /* Light blue glow */
             white-space: nowrap; /* Ensure the title is on one line */
             margin: 0;
             z-index: 2;
@@ -69,7 +70,7 @@
         }
 
         .section a {
-            color: #ffffff; /* 白色文本 */
+            color: #affdfb; /* 更新为浅蓝色 */
             text-decoration: none; /* 去掉下划线 */
             display: block; /* 让链接填满整个容器 */
             transition: color 0.3s ease; /* 颜色变化的过渡效果 */
@@ -126,10 +127,10 @@
     </style>
 </head>
 <body>
-    <h1>Main Title</h1>
+    <h1>MENU</h1>
     <div class="section-container">
         <div class="section"><a href="./phy_skills.html">物理技能</a></div>
-        <div class="section"><a href="#section2">Section 2</a></div>
+        <div class="section"><a href="#section2">属性技能</a></div>
         <div class="section"><a href="#section3">Section 3</a></div>
         <div class="section"><a href="#section4">Section 4</a></div>
         <div class="section"><a href="#section5">Section 5</a></div>
