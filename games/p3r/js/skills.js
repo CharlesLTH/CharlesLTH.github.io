@@ -62,7 +62,7 @@ function sortTable(sortProperty) {
     currentSortOrder = (currentSortColumn === sortProperty && currentSortOrder === 'asc') ? 'desc' : 'asc';
     currentSortColumn = sortProperty;
 
-    fetch('https://yourdomain.com/path/to/skills.json')
+    fetch('./json/skills.json')
         .then(response => response.json())
         .then(data => {
             let skillsArray = Object.values(data);
