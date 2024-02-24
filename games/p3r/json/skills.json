@@ -1,0 +1,25 @@
+{
+  "技能一": {
+    "add": "触电",
+    "card": 6,
+    "cost": 1008,
+    "effect": "低概率触电",
+    "elem": "电",
+    "hit": 99,
+    "mod": 15,
+    "power": 100,
+    "rank": 4,
+    "target": "单体"
+  },
+  "技能二": {
+    "card": 11,
+    "cost": 19,
+    "crit": 17,
+    "effect": "大幅斩击伤害",
+    "elem": "斩",
+    "hit": 85,
+    "power": 350,
+    "rank": 7,
+    "target": "群体"
+  },
+}
