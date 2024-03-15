@@ -1,0 +1,24 @@
+/* 美化表格 */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #b0b0b0; /* 比浅灰稍微深一点的灰色 */
+    padding: 8px;
+    text-align: left;
+}
+
+thead th {
+    background-color: #333;
+    color: white;
+}
+
+tbody td {
+    background-color: #fff; /* 默认背景色，以便清除排序列的颜色 */
+}
+
+.sortable:hover {
+    cursor: pointer;
+}
