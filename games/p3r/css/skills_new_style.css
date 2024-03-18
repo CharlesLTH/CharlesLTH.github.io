@@ -6,9 +6,9 @@ table {
 
 th, td {
     border: 1px solid #b0b0b0;
-    padding: 4px;
+    padding: 0.4vw;
     text-align: left;
-    font-size: 1.0vw; /* 字体大小随视口宽度变化 */
+    font-size: 1vw; /* 字体大小随视口宽度变化 */
 }
 
 thead th {
@@ -108,7 +108,7 @@ td[data-name="特殊"] {
 
 th[data-name="习得方式"],
 td[data-name="习得方式"] {
-    width: 30%;
+    width: 28%;
 }
 
 /* 以此类推，为其他 data-name 设置宽度，确保总和为 100% */
