@@ -1,59 +1,69 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // 从 JSON 文件加载数据
-    fetch('./json/all_skill_data.json')
+    fetch('https://raw.githubusercontent.com/CharlesLTH/CharlesLTH.github.io/main/games/p3r/json/skills.json')
     .then(response => response.json())
     .then(data => {
-        fillTable(data);
-        initSortListeners(data);
+        // 过滤数据：只保留技能为“斩”或“打”的数据
+        const filteredData = data.filter(item => item.属性 === "斩" || item.属性 === "打" || item.属性 === "贯");
+        initTable(filteredData);
+        initSortListeners(filteredData);
     })
     .catch(error => console.error('Error loading JSON data:', error));
 
-    // 填充表格函数
-    function fillTable(data) {
+    function initTable(data) {
         var tableBody = document.querySelector('#dataTable tbody');
         tableBody.innerHTML = ''; // 清空现有内容
         data.forEach(item => {
             var row = document.createElement('tr');
-            Object.values(item).forEach(value => {
-                var cell = document.createElement('td');
-                cell.textContent = value;
-                row.appendChild(cell);
+            const headers = document.querySelectorAll('th[data-name]');
+            headers.forEach(header => {
+                const dataName = header.getAttribute('data-name');
+                if (item.hasOwnProperty(dataName)) { // 检查 JSON 对象是否包含该属性
+                    var cell = document.createElement('td');
+                    let cellValue = item[dataName];
+                    // 特殊处理百分比数据
+                    if (['HP', '命中率', '暴击率', '异常率1', '异常率2'].includes(dataName) && cellValue !== "") {
+                        cellValue = `${Math.round(parseFloat(cellValue) * 100)}%`;
+                    }
+                    // 特殊处理异常数据
+                    if ((dataName === '异常2' && cellValue === item['异常1']) || cellValue === "") {
+                        cellValue = "";
+                    }
+                    cell.textContent = cellValue;
+                    row.appendChild(cell);
+                }
             });
             tableBody.appendChild(row);
         });
     }
 
-    // 初始化排序监听器
-    function initSortListeners(jsonData) {
-        var sortableHeaders = document.querySelectorAll('.sortable');
-        sortableHeaders.forEach((header, index) => {
+    function initSortListeners(data) {
+        var sortableHeaders = document.querySelectorAll('th[data-name].sortable');
+        sortableHeaders.forEach(header => {
             header.addEventListener('click', () => {
-                // 获取当前列是否已经按升序排序
+                const dataName = header.getAttribute('data-name'); // 获取列的 data-name 属性
                 const isAscending = header.classList.toggle('asc', !header.classList.contains('asc'));
-                // 获取对应列的键名
-                const keyName = header.getAttribute('data-sort-index');
-                sortTable(jsonData, keyName, isAscending);
-                // 更新列背景色
-                updateColumnBackground(index + 1);
+                sortTable(data, dataName, isAscending);
+                updateColumnBackground(header);
             });
         });
     }
 
-    // 更新排序列背景色
-    function updateColumnBackground(columnIndex) {
-        document.querySelectorAll('#dataTable tr td').forEach(td => td.style.backgroundColor = '');
+    function updateColumnBackground(header) {
+        // 清除所有单元格的背景色
+        document.querySelectorAll('#dataTable td').forEach(td => td.style.backgroundColor = '');
+        // 找到被点击列的索引
+        const columnIndex = Array.from(document.querySelectorAll('th[data-name]')).indexOf(header) + 1;
+        // 为整列设置背景色
         document.querySelectorAll(`#dataTable tr td:nth-child(${columnIndex})`).forEach(td => td.style.backgroundColor = '#f0f0f0');
     }
 
-    // 排序表格
     function sortTable(data, sortBy, ascending) {
-        data.sort((a, b) => {
+        const sortedData = data.sort((a, b) => {
             let valueA = a[sortBy];
             let valueB = b[sortBy];
-            // 尝试将值转换为数字进行比较
             valueA = isNaN(Number(valueA)) ? valueA : Number(valueA);
             valueB = isNaN(Number(valueB)) ? valueB : Number(valueB);
-            
+
             if (valueA < valueB) {
                 return ascending ? -1 : 1;
             }
@@ -62,6 +72,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             return 0;
         });
-        fillTable(data);
+        initTable(sortedData); // 使用排序后的数据重新初始化表格
     }
 });
