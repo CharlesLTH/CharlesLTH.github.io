@@ -28,20 +28,25 @@ td[data-name="CH"] {
 
 th[data-name="elem"],
 td[data-name="elem"] {
-    width: 15%;
+    width: 10%;
 }
 
 th[data-name="cost"],
 td[data-name="cost"] {
-    width: 15%;
+    width: 10%;
 }
 
 th[data-name="power"],
 td[data-name="power"] {
-    width: 15%;
+    width: 10%;
+}
+
+th[data-name="Cirt"],
+td[data-name="Cirt"] {
+    width: 10%;
 }
 
 th[data-name="effect"],
 td[data-name="effect"] {
-    width: 40%;
+    width: 45%;
 }
