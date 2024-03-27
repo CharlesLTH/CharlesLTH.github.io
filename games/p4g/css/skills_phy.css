@@ -1,0 +1,47 @@
+/* 基本的表格样式 */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #b0b0b0;
+    padding: 0.4vw;
+    text-align: left;
+    font-size: 0.8vw; /* 字体大小随视口宽度变化 */
+}
+
+thead th {
+    background-color: #333;
+    color: white;
+}
+
+tbody td {
+    background-color: #fff;
+}
+
+/* 设置不同 data-name 的列宽度 */
+th[data-name="CH"],
+td[data-name="CH"] {
+    width: 15%;
+}
+
+th[data-name="elem"],
+td[data-name="elem"] {
+    width: 15%;
+}
+
+th[data-name="cost"],
+td[data-name="cost"] {
+    width: 15%;
+}
+
+th[data-name="power"],
+td[data-name="power"] {
+    width: 15%;
+}
+
+th[data-name="effect"],
+td[data-name="effect"] {
+    width: 40%;
+}
