@@ -8,7 +8,7 @@ th, td {
     border: 1px solid #b0b0b0;
     padding: 0.4vw;
     text-align: left;
-    font-size: 0.8vw; /* 字体大小随视口宽度变化 */
+    font-size: 1.0vw; /* 字体大小随视口宽度变化 */
 }
 
 thead th {
@@ -56,7 +56,27 @@ td[data-name="目标"] {
     width: 5%;
 }
 
+th[data-name="等级"],
+td[data-name="等级"] {
+    width: 5%;
+}
+
+th[data-name="抽卡"],
+td[data-name="抽卡"] {
+    width: 5%;
+}
+
+th[data-name="技能卡"],
+td[data-name="技能卡"] {
+    width: 5%;
+}
+
+th[data-name="突变"],
+td[data-name="突变"] {
+    width: 10%;
+}
+
 th[data-name="效果"],
 td[data-name="效果"] {
-    width: 57%;
+    width: 32%;
 }
