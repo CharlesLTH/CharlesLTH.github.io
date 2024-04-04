@@ -2,10 +2,19 @@ document.addEventListener('DOMContentLoaded', function() {
     fetch('https://raw.githubusercontent.com/CharlesLTH/CharlesLTH.github.io/main/games/p4g/json/p4g_skills.json')
     .then(response => response.json())
     .then(data => {
-        // 过滤数据：只保留技能为“phy”的数据
-        const filteredData = data.filter(item => item.elem === "phy");
-        initTable(filteredData);
-        initSortListeners(filteredData);
+        // 过滤数据：只保留魔法技能
+        const filteredData = data.filter(item => item.属性 === "火" || item.属性 === "冰" || item.属性 === "雷" || item.属性 === "風" || item.属性 === "光" || item.属性 === "闇" || item.属性 === "萬能");
+        // 调整消耗值
+        const adjustedData = filteredData.map(item => {
+            if (item.消耗 < 1000) {
+                item.消耗 = item.消耗 + "%";
+            } else if (item.消耗 > 1000) {
+                item.消耗 = item.消耗 - 1000;
+            }
+            return item;
+        });
+        initTable(adjustedData);
+        initSortListeners(adjustedData);
     })
     .catch(error => console.error('Error loading JSON data:', error));
 
@@ -19,7 +28,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 const dataName = header.getAttribute('data-name');
                 if (item.hasOwnProperty(dataName)) { // 检查 JSON 对象是否包含该属性
                     var cell = document.createElement('td');
-                    let cellValue = item[dataName];
+                    // 特别处理“消耗”值以保持格式不变
+                    let cellValue = (dataName === "消耗" && typeof item[dataName] === "number") ? item[dataName].toString() : item[dataName];
                     cell.textContent = cellValue;
                     row.appendChild(cell);
                 }
@@ -53,6 +63,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const sortedData = data.sort((a, b) => {
             let valueA = a[sortBy];
             let valueB = b[sortBy];
+            // 处理带有“%”的情况
+            valueA = (typeof valueA === "string" && valueA.endsWith("%")) ? Number(valueA.slice(0, -1)) : valueA;
+            valueB = (typeof valueB === "string" && valueB.endsWith("%")) ? Number(valueB.slice(0, -1)) : valueB;
             valueA = isNaN(Number(valueA)) ? valueA : Number(valueA);
             valueB = isNaN(Number(valueB)) ? valueB : Number(valueB);
 
