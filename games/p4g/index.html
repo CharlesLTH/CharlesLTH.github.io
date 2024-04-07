@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="./js/jquery.min.js"></script>
+    <title>Style Webpage</title>
+    <style>
+        body {
+            background-image: url('./pic/bg.webp'); /* 背景图片路径 */
+            background-size: cover; /* 覆盖整个屏幕，保持长宽比 */
+            background-position: center; /* 居中显示 */
+            background-repeat: no-repeat; /* 不重复 */
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column; /* Stack elements vertically */
+            align-items: center; /* Center items horizontally */
+            justify-content: center; /* Center items vertically */
+            height: 100vh;
+        }
+
+        .page_container {
+            position: absolute; /* 使其脱离文档流 */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1; /* 在背景上方，其他元素下方 */
+        }
+
+        h1 {
+            position: absolute;
+            right: 20px; /* Slightly to the left */
+            top: 60%;
+            transform: translate(0%, -60%) rotate(90deg); /* Rotate and position the title, move down a bit more */
+            transform-origin: top right;
+            font-size: 3em; /* Smaller font size */
+            font-weight: bold;
+            font-family: 'Arial Black', Gadget, sans-serif; /* Bold, black font */
+            color: #ffffff; /* Change text color to white */
+            text-shadow: 0 0 10px #add8e6; /* Light blue glow */
+            white-space: nowrap; /* Ensure the title is on one line */
+            margin: 0;
+            z-index: 2;
+        }
+
+        .section-container {
+            display: flex;
+            flex-direction: column; /* Arrange sections in a column */
+            align-items: center; /* Center sections horizontally */
+            gap: 10px; /* Reduced gap between sections */
+            z-index: 2;
+        }
+
+        .section {
+            font-size: 1.5em;
+            font-weight: bold;
+            font-family: 'Arial Black', Gadget, sans-serif;
+            padding: 10px;
+            position: relative;
+            cursor: pointer;
+            z-index: 2;
+            background-color: transparent; /* 透明背景 */
+            transform: skew(-10deg, -8deg);
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            margin: 5px 0; /* Reduced vertical spacing */
+        }
+
+        .section a {
+            color: #affdfb; /* 更新为浅蓝色 */
+            text-decoration: none; /* 去掉下划线 */
+            display: block; /* 让链接填满整个容器 */
+            transition: color 0.3s ease; /* 颜色变化的过渡效果 */
+        }
+
+        .section:hover {
+            transform: scale(1.1) skew(-10deg, -8deg);
+        }
+
+        .section:hover a {
+            color: #000000; /* 悬停时的黑色文本 */
+        }
+
+        .section::before, .section::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            clip-path: polygon(50% 0, 0% 100%, 100% 100%);
+        }
+
+        .section::before {
+            /* This is the white triangle on top */
+            transform: translate(-50%, -50%) scale(0);
+            background-color: #ffffff; /* White color */
+            opacity: 0;
+            z-index: -1;
+        }
+
+        .section::after {
+            /* This is the larger purple triangle beneath */
+            transform: translate(-50%, -50%) scale(1.00) rotate(0deg);
+            background-color: #fe21a5; /* Purple color */
+            opacity: 0; /* Start fully transparent */
+            z-index: -2; /* Ensure it's below the white triangle */
+        }
+
+        .section:hover::before, .section:hover::after {
+            opacity: 1;
+        }
+
+        .section:hover::before {
+            /* The white triangle scales to normal size on hover */
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .section:hover::after {
+            /* The purple triangle becomes visible and scales up a bit more on hover */
+            transform: translate(-50%, -50%) scale(1.10) rotate(6deg);
+        }
+    </style>
+</head>
+<body>
+    <h1>MENU</h1>
+    <div class="section-container">
+        <div class="section"><a href="./skills_phy.html">物理技能</a></div>
+        <div class="section"><a href="./skills_mag.html">属性技能</a></div>
+        <div class="section"><a href="./skills_uti.html">辅助技能</a></div>
+        <div class="section"><a href="./skills_pas.html">被动技能</a></div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('h2 a');
+
+            sections.forEach(section => {
+                section.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    console.log(`You clicked on ${section.textContent}`);
+                    // 在这里添加更多的交互逻辑
+                });
+            });
+        });
+    </script>
+</body>
+</html>
