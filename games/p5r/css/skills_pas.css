@@ -36,7 +36,7 @@ td[data-name="技能卡"] {
     width: 10%;
 }
 
-th[data-name="效果"],
-td[data-name="效果"] {
+th[data-name="描述"],
+td[data-name="描述"] {
     width: 70%;
 }
