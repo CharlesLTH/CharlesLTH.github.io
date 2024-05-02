@@ -21,37 +21,22 @@ tbody td {
 }
 
 /* 设置不同 data-name 的列宽度 */
-th[data-name="中文名"],
-td[data-name="中文名"] {
+th[data-name="技能名称"],
+td[data-name="技能名称"] {
     width: 10%;
 }
 
 th[data-name="属性"],
 td[data-name="属性"] {
-    width: 5%;
-}
-
-th[data-name="等级"],
-td[data-name="等级"] {
-    width: 5%;
-}
-
-th[data-name="抽卡"],
-td[data-name="抽卡"] {
-    width: 5%;
+    width: 10%;
 }
 
 th[data-name="技能卡"],
 td[data-name="技能卡"] {
-    width: 5%;
-}
-
-th[data-name="突变"],
-td[data-name="突变"] {
     width: 10%;
 }
 
 th[data-name="效果"],
 td[data-name="效果"] {
-    width: 60%;
+    width: 70%;
 }

@@ -1,9 +1,9 @@
 document.addEventListener('DOMContentLoaded', function() {
-    fetch('https://raw.githubusercontent.com/CharlesLTH/CharlesLTH.github.io/main/games/p4g/json/p4g_skills.json')
+    fetch('https://raw.githubusercontent.com/CharlesLTH/CharlesLTH.github.io/main/games/p5r/json/p5r_skills.json')
     .then(response => response.json())
     .then(data => {
         // 过滤数据：只保留属性为“物理”的数据
-        const filteredData = data.filter(item => item.属性 === "被動");
+        const filteredData = data.filter(item => item.属性 === "被动");
         // 调整消耗值
         const adjustedData = filteredData.map(item => {
             if (item.消耗 < 1000) {
