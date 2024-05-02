@@ -1,0 +1,82 @@
+/* 基本的表格样式 */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #b0b0b0;
+    padding: 0.4vw;
+    text-align: left;
+    font-size: 1.0vw; /* 字体大小随视口宽度变化 */
+}
+
+thead th {
+    background-color: #333;
+    color: white;
+}
+
+tbody td {
+    background-color: #fff;
+}
+
+/* 设置不同 data-name 的列宽度 */
+th[data-name="ID"],
+td[data-name="ID"] {
+    width: 4%;
+}
+
+th[data-name="技能名称"],
+td[data-name="技能名称"] {
+    width: 6%;
+}
+
+th[data-name="属性"],
+td[data-name="属性"] {
+    width: 4%;
+}
+
+th[data-name="HP消耗量"],
+td[data-name="HP消耗量"] {
+    width: 4%;
+}
+
+th[data-name="数值伤害"],
+td[data-name="数值伤害"] {
+    width: 4%;
+}
+
+th[data-name="校正伤害"],
+td[data-name="校正伤害"] {
+    width: 8%;
+}
+
+th[data-name="命中几率"],
+td[data-name="命中几率"] {
+    width: 4%;
+}
+
+th[data-name="暴击机率"],
+td[data-name="暴击机率"] {
+    width: 4%;
+}
+
+th[data-name="效果"],
+td[data-name="效果"] {
+    width: 7%;
+}
+
+th[data-name="目标"],
+td[data-name="目标"] {
+    width: 5%;
+}
+
+th[data-name="对应P"],
+td[data-name="对应P"] {
+    width: 20%;
+}
+
+th[data-name="描述"],
+td[data-name="描述"] {
+    width: 30%;
+}
