@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const filteredData = data.filter(item => item.属性 === "物理" || item.属性 === "枪击");
         // 调整消耗值
         const adjustedData = filteredData.map(item => {
-            item.HP消耗量 = (item.HP消耗量 * 100) + "%";
+            item.HP消耗量 = (item.HP消耗量 * 100).toFixed(2) + "%";
             return item;
         });
         initTable(adjustedData);

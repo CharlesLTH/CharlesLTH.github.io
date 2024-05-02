@@ -28,7 +28,7 @@ td[data-name="ID"] {
 
 th[data-name="技能名称"],
 td[data-name="技能名称"] {
-    width: 6%;
+    width: 8%;
 }
 
 th[data-name="属性"],
@@ -73,7 +73,7 @@ td[data-name="目标"] {
 
 th[data-name="对应P"],
 td[data-name="对应P"] {
-    width: 20%;
+    width: 18%;
 }
 
 th[data-name="描述"],
