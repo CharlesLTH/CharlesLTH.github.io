@@ -1,16 +1,12 @@
 document.addEventListener('DOMContentLoaded', function() {
-    fetch('https://raw.githubusercontent.com/CharlesLTH/CharlesLTH.github.io/main/games/p4g/json/p4g_skills.json')
+    fetch('https://raw.githubusercontent.com/CharlesLTH/CharlesLTH.github.io/main/games/p5r/json/p5r_skills.json')
     .then(response => response.json())
     .then(data => {
         // 过滤数据：只保留魔法技能
-        const filteredData = data.filter(item => item.属性 === "火" || item.属性 === "冰" || item.属性 === "雷" || item.属性 === "風" || item.属性 === "光" || item.属性 === "闇" || item.属性 === "萬能");
+        const filteredData = data.filter(item => item.属性 === "火炎" || item.属性 === "冰结" || item.属性 === "电击" || item.属性 === "疾风" || item.属性 === "核热" || item.属性 === "念动" || item.属性 === "祝福" || item.属性 === "呪怨" || item.属性 === "万能");
         // 调整消耗值
         const adjustedData = filteredData.map(item => {
-            if (item.消耗 < 1000) {
-                item.消耗 = item.消耗 + "%";
-            } else if (item.消耗 > 1000) {
-                item.消耗 = item.消耗 - 1000;
-            }
+            item.HP消耗量 = (item.HP消耗量 * 100) + "%";
             return item;
         });
         initTable(adjustedData);

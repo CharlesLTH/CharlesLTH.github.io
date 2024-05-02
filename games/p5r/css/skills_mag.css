@@ -21,34 +21,44 @@ tbody td {
 }
 
 /* 设置不同 data-name 的列宽度 */
-th[data-name="中文名"],
-td[data-name="中文名"] {
-    width: 10%;
+th[data-name="ID"],
+td[data-name="ID"] {
+    width: 4%;
+}
+
+th[data-name="技能名称"],
+td[data-name="技能名称"] {
+    width: 8%;
 }
 
 th[data-name="属性"],
 td[data-name="属性"] {
-    width: 5%;
+    width: 4%;
 }
 
-th[data-name="消耗"],
-td[data-name="消耗"] {
-    width: 5%;
+th[data-name="SP消耗量"],
+td[data-name="SP消耗量"] {
+    width: 4%;
 }
 
-th[data-name="倍率"],
-td[data-name="倍率"] {
-    width: 5%;
+th[data-name="数值伤害"],
+td[data-name="数值伤害"] {
+    width: 4%;
 }
 
-th[data-name="附加"],
-td[data-name="附加"] {
+th[data-name="校正伤害"],
+td[data-name="校正伤害"] {
     width: 8%;
 }
 
-th[data-name="附加率"],
-td[data-name="附加率"] {
-    width: 5%;
+th[data-name="命中几率"],
+td[data-name="命中几率"] {
+    width: 4%;
+}
+
+th[data-name="效果"],
+td[data-name="效果"] {
+    width: 7%;
 }
 
 th[data-name="目标"],
@@ -56,27 +66,12 @@ td[data-name="目标"] {
     width: 5%;
 }
 
-th[data-name="等级"],
-td[data-name="等级"] {
-    width: 5%;
+th[data-name="对应P"],
+td[data-name="对应P"] {
+    width: 20%;
 }
 
-th[data-name="抽卡"],
-td[data-name="抽卡"] {
-    width: 5%;
-}
-
-th[data-name="技能卡"],
-td[data-name="技能卡"] {
-    width: 5%;
-}
-
-th[data-name="突变"],
-td[data-name="突变"] {
-    width: 10%;
-}
-
-th[data-name="效果"],
-td[data-name="效果"] {
+th[data-name="描述"],
+td[data-name="描述"] {
     width: 32%;
 }
