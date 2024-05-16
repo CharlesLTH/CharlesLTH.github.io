@@ -1,0 +1,117 @@
+/* 基本的表格样式 */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #b0b0b0;
+    padding: 0.4vw;
+    text-align: left;
+    font-size: 1.0vw; /* 字体大小随视口宽度变化 */
+}
+
+thead th {
+    background-color: #333;
+    color: white;
+}
+
+tbody td {
+    background-color: #fff;
+}
+
+/* 设置不同 data-name 的列宽度 */
+th[data-name="ID"],
+td[data-name="ID"] {
+    width: 4%;
+}
+
+th[data-name="LV"],
+td[data-name="LV"] {
+    width: 4%;
+}
+
+th[data-name="名称"],
+td[data-name="名称"] {
+    width: 7%;
+}
+
+th[data-name="特性"],
+td[data-name="特性"] {
+    width: 7%;
+}
+
+th[data-name="物"],
+td[data-name="物"] {
+    width: 3%;
+}
+
+th[data-name="枪"],
+td[data-name="枪"] {
+    width: 3%;
+}
+
+th[data-name="火"],
+td[data-name="火"] {
+    width: 3%;
+}
+
+th[data-name="冰"],
+td[data-name="冰"] {
+    width: 3%;
+}
+
+th[data-name="电"],
+td[data-name="电"] {
+    width: 3%;
+}
+
+th[data-name="风"],
+td[data-name="风"] {
+    width: 3%;
+}
+
+th[data-name="念"],
+td[data-name="念"] {
+    width: 3%;
+}
+
+th[data-name="核"],
+td[data-name="核"] {
+    width: 3%;
+}
+
+th[data-name="祝"],
+td[data-name="祝"] {
+    width: 3%;
+}
+
+th[data-name="咒"],
+td[data-name="咒"] {
+    width: 3%;
+}
+
+th[data-name="电刑"],
+td[data-name="电刑"] {
+    width: 6%;
+}
+
+th[data-name="警报电刑"],
+td[data-name="警报电刑"] {
+    width: 6%;
+}
+
+th[data-name="装备类型"],
+td[data-name="装备类型"] {
+    width: 5%;
+}
+
+th[data-name="合成"],
+td[data-name="合成"] {
+    width: 20%;
+}
+
+th[data-name="技能"],
+td[data-name="技能"] {
+    width: 11%;
+}
