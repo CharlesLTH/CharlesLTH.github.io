@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     var cell = document.createElement('td');
                     // 特别处理“HP消耗量”值以保持格式不变
                     let cellValue = (dataName === "HP消耗量" && typeof item[dataName] === "number") ? item[dataName].toString() : item[dataName];
-                    cell.textContent = cellValue;
+                    cell.innerHTML = cellValue;;
                     row.appendChild(cell);
                 }
             });
