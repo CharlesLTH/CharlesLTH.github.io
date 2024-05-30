@@ -31,6 +31,11 @@ td[data-name="LV"] {
     width: 4%;
 }
 
+th[data-name="等级"],
+td[data-name="等级"] {
+    width: 3%;
+}
+
 th[data-name="名称"],
 td[data-name="名称"] {
     width: 7%;
@@ -108,10 +113,10 @@ td[data-name="装备类型"] {
 
 th[data-name="合成"],
 td[data-name="合成"] {
-    width: 20%;
+    width: 18%;
 }
 
 th[data-name="技能"],
 td[data-name="技能"] {
-    width: 11%;
+    width: 10%;
 }
