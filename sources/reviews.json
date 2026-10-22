@@ -1,0 +1,910 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-10-21",
+  "review_method": "source inspection plus independently reproducible recipe constraints; not in-game verification",
+  "upstream_database_sha256": "95fc6ebaabccf4b6a6ca30887f708de5e32dc0f7f7a96d41011b2a51ecf7a2d3",
+  "weapon_identities": [
+    {
+      "id": "weapon-220701",
+      "page": "ida/220701.html",
+      "name": "寒冰毒液",
+      "family": 3117,
+      "upstream_name": "Snow Venom 1",
+      "reason": "element_values_disagree_identity_supported",
+      "page_sha256": {
+        "ida/220701.html": "1e483c15e59b4dd39520f749f5ad9a762776c9af01237f1874df60a715811f93"
+      },
+      "expected_profile_differences": [
+        {
+          "level": 8,
+          "field": "elements",
+          "site": [
+            [
+              "Ice",
+              26
+            ],
+            [
+              "Poison",
+              26
+            ]
+          ],
+          "upstream": [
+            [
+              "Ice",
+              26
+            ],
+            [
+              "Poison",
+              27
+            ]
+          ]
+        }
+      ],
+      "initial_equal_recipes": 8,
+      "note": "Identity candidate only. Recheck at least two recipe levels using independent baseline materials; preserve differing values."
+    },
+    {
+      "id": "weapon-228492",
+      "page": "ida/228492.html",
+      "name": "红熊轰筒",
+      "family": 1349,
+      "upstream_name": "Crimson Bowgun 1",
+      "reason": "same_profile_disambiguated_by_recipes",
+      "page_sha256": {
+        "ida/228492.html": "7ea1b6a5673f52ae517484a818c2fc52b6999f7bddcd1bf28e2ad72f8ea1391d"
+      },
+      "expected_profile_differences": [],
+      "initial_equal_recipes": 13,
+      "note": "Identity candidate only. Recheck at least two recipe levels using independent baseline materials; preserve differing values."
+    },
+    {
+      "id": "weapon-228495",
+      "page": "ida/228495.html",
+      "name": "兔女神重弩",
+      "family": 1350,
+      "upstream_name": "Eeostopen Burst 1",
+      "reason": "same_profile_disambiguated_by_recipes",
+      "page_sha256": {
+        "ida/228495.html": "3c4c554ed3eeb8a4da6b8d896c3cd2338439883f6a120ffbb89f583498c83926"
+      },
+      "expected_profile_differences": [],
+      "initial_equal_recipes": 14,
+      "note": "Identity candidate only. Recheck at least two recipe levels using independent baseline materials; preserve differing values."
+    },
+    {
+      "id": "weapon-228498",
+      "page": "ida/228498.html",
+      "name": "蟹纹破坏者重弩",
+      "family": 1351,
+      "upstream_name": "Stonefist Buster 1",
+      "reason": "same_profile_disambiguated_by_recipes",
+      "page_sha256": {
+        "ida/228498.html": "2ef570e9e960e0f7be29461e5f742baa7242a9840def122a4942a47eb83d88fb"
+      },
+      "expected_profile_differences": [],
+      "initial_equal_recipes": 14,
+      "note": "Identity candidate only. Recheck at least two recipe levels using independent baseline materials; preserve differing values."
+    },
+    {
+      "id": "weapon-228682",
+      "page": "ida/228682.html",
+      "name": "紫毒姬双剑",
+      "family": 3162,
+      "upstream_name": "Royal Daggers 1",
+      "reason": "element_values_disagree_identity_supported",
+      "page_sha256": {
+        "ida/228682.html": "51c6b4c3a5f58b5e67c61cad7df1b3acd49334167437be522924da153caba6a4"
+      },
+      "expected_profile_differences": [
+        {
+          "level": 14,
+          "field": "elements",
+          "site": [
+            [
+              "Poison",
+              32
+            ]
+          ],
+          "upstream": [
+            [
+              "Poison",
+              30
+            ]
+          ]
+        }
+      ],
+      "initial_equal_recipes": 13,
+      "note": "Identity candidate only. Recheck at least two recipe levels using independent baseline materials; preserve differing values."
+    },
+    {
+      "id": "weapon-229254",
+      "page": "ida/229254.html",
+      "name": "ワンデリオン",
+      "family": 3372,
+      "upstream_name": "Fool's Harp 1",
+      "reason": "element_values_disagree_identity_supported",
+      "page_sha256": {
+        "ida/229254.html": "625ea58b43671a6c2e697daba67a63a35086b93b550b89459cfde151edb0e360"
+      },
+      "expected_profile_differences": [
+        {
+          "level": 9,
+          "field": "elements",
+          "site": [
+            [
+              "Sleep",
+              29
+            ]
+          ],
+          "upstream": [
+            [
+              "Sleep",
+              30
+            ]
+          ]
+        }
+      ],
+      "initial_equal_recipes": 10,
+      "note": "Identity candidate only. Recheck at least two recipe levels using independent baseline materials; preserve differing values."
+    },
+    {
+      "id": "weapon-231206",
+      "page": "ida/231206.html",
+      "name": "焰斧银火强焰",
+      "family": 2334,
+      "upstream_name": "Rathsplicer 1",
+      "reason": "element_values_disagree_identity_supported",
+      "page_sha256": {
+        "ida/231206.html": "56f07a9af241a723dccc765e5fc32e0eaf965536d2253ffe3d276871a8dbf062"
+      },
+      "expected_profile_differences": [
+        {
+          "level": 2,
+          "field": "elements",
+          "site": [
+            [
+              "Fire",
+              35
+            ]
+          ],
+          "upstream": [
+            [
+              "Fire",
+              34
+            ]
+          ]
+        }
+      ],
+      "initial_equal_recipes": 5,
+      "note": "Identity candidate only. Recheck at least two recipe levels using independent baseline materials; preserve differing values."
+    },
+    {
+      "id": "weapon-232100",
+      "page": "ida/232100.html",
+      "name": "爆碎征箭",
+      "family": 2840,
+      "upstream_name": "Demolition Bow 1",
+      "reason": "element_values_disagree_identity_supported",
+      "page_sha256": {
+        "ida/232100.html": "9acecabeaf67d8820a20bcae0a338a2aa7dc20e8b92388f4d625c1c7868e2abf"
+      },
+      "expected_profile_differences": [
+        {
+          "level": 6,
+          "field": "elements",
+          "site": [
+            [
+              "Blastblight",
+              19
+            ]
+          ],
+          "upstream": [
+            [
+              "Blastblight",
+              20
+            ]
+          ]
+        }
+      ],
+      "initial_equal_recipes": 6,
+      "note": "Identity candidate only. Recheck at least two recipe levels using independent baseline materials; preserve differing values."
+    },
+    {
+      "id": "weapon-233851",
+      "page": "ida/233851.html",
+      "name": "扩张之魔神锤",
+      "family": 830,
+      "upstream_name": "Genie's Expanse 1",
+      "reason": "element_values_disagree_identity_supported",
+      "page_sha256": {
+        "ida/233851.html": "3225c1c0fc12696453c1e89bc7267be41d968c3b1092f078cb38740ae2df9aa8"
+      },
+      "expected_profile_differences": [
+        {
+          "level": 6,
+          "field": "elements",
+          "site": [
+            [
+              "Poison",
+              36
+            ]
+          ],
+          "upstream": [
+            [
+              "Poison",
+              35
+            ]
+          ]
+        }
+      ],
+      "initial_equal_recipes": 6,
+      "note": "Identity candidate only. Recheck at least two recipe levels using independent baseline materials; preserve differing values."
+    },
+    {
+      "id": "weapon-236580",
+      "page": "ida/236580.html",
+      "name": "宝缠重弩",
+      "family": 1355,
+      "upstream_name": "Grobo Shot 1",
+      "reason": "same_profile_disambiguated_by_recipes",
+      "page_sha256": {
+        "ida/236580.html": "39d4da035a4cb99cffd36bacc87c554783ec95c3173cab02ae9852b5ae8b6cac"
+      },
+      "expected_profile_differences": [],
+      "initial_equal_recipes": 14,
+      "note": "Identity candidate only. Recheck at least two recipe levels using independent baseline materials; preserve differing values."
+    },
+    {
+      "id": "weapon-236610",
+      "page": "ida/236610.html",
+      "name": "暴风神怒号弩",
+      "family": 1358,
+      "upstream_name": "Rudra's Howl 1",
+      "reason": "same_profile_disambiguated_by_recipes",
+      "page_sha256": {
+        "ida/236610.html": "a2432d34ab263f7416fc7cd800dc0e94a7075c1f62869a79039b0c5ee7034478"
+      },
+      "expected_profile_differences": [],
+      "initial_equal_recipes": 14,
+      "note": "Identity candidate only. Recheck at least two recipe levels using independent baseline materials; preserve differing values."
+    },
+    {
+      "id": "weapon-288455",
+      "page": "ida/288455.html",
+      "name": "升天or坠落 [XX]",
+      "family": 3912,
+      "upstream_name": "Elends/Essor 1",
+      "reason": "negative_affinity_missing_in_upstream",
+      "page_sha256": {
+        "ida/288455.html": "fb9dc04983520fb834527d3f8f8b318be5dc6014b33617d265dbdb35df761303"
+      },
+      "expected_profile_differences": [
+        {
+          "level": 1,
+          "field": "affinity",
+          "site": "-35/10",
+          "upstream": "10"
+        },
+        {
+          "level": 2,
+          "field": "affinity",
+          "site": "-35/10",
+          "upstream": "10"
+        },
+        {
+          "level": 3,
+          "field": "affinity",
+          "site": "-35/10",
+          "upstream": "10"
+        }
+      ],
+      "initial_equal_recipes": 3,
+      "note": "Identity candidate only. Recheck at least two recipe levels using independent baseline materials; preserve differing values."
+    },
+    {
+      "id": "weapon-292565",
+      "page": "ida/292565.html",
+      "name": "光照or阴影 [XX]",
+      "family": 379,
+      "upstream_name": "Licht/Ombre 1",
+      "reason": "negative_affinity_missing_in_upstream",
+      "page_sha256": {
+        "ida/292565.html": "d4a6581e42150a02aef169897b62e979b3e9706966c1c4efc5ef4820affecee1"
+      },
+      "expected_profile_differences": [
+        {
+          "level": 1,
+          "field": "affinity",
+          "site": "-45/20",
+          "upstream": "20"
+        },
+        {
+          "level": 2,
+          "field": "affinity",
+          "site": "-45/20",
+          "upstream": "20"
+        },
+        {
+          "level": 3,
+          "field": "affinity",
+          "site": "-45/20",
+          "upstream": "20"
+        }
+      ],
+      "initial_equal_recipes": 2,
+      "note": "Identity candidate only. Recheck at least two recipe levels using independent baseline materials; preserve differing values."
+    },
+    {
+      "id": "weapon-296363",
+      "page": "ida/296363.html",
+      "name": "邪恶or正义 [XX]",
+      "family": 2162,
+      "upstream_name": "Übel/Equité 1",
+      "reason": "negative_affinity_missing_in_upstream",
+      "page_sha256": {
+        "ida/296363.html": "9906aa139fbc5e97750b35b94edf2fc6c661ff1e7d587b48d5e12ba6d725d5f3"
+      },
+      "expected_profile_differences": [
+        {
+          "level": 1,
+          "field": "affinity",
+          "site": "-30/10",
+          "upstream": "10"
+        },
+        {
+          "level": 2,
+          "field": "affinity",
+          "site": "-30/10",
+          "upstream": "10"
+        },
+        {
+          "level": 3,
+          "field": "affinity",
+          "site": "-30/10",
+          "upstream": "10"
+        }
+      ],
+      "initial_equal_recipes": 2,
+      "note": "Identity candidate only. Recheck at least two recipe levels using independent baseline materials; preserve differing values."
+    },
+    {
+      "id": "weapon-296661",
+      "page": "ida/296661.html",
+      "name": "戏法or信任 [XX]",
+      "family": 3656,
+      "upstream_name": "List/Confiance 1",
+      "reason": "negative_affinity_missing_in_upstream",
+      "page_sha256": {
+        "ida/296661.html": "8d0030399c6b28b5359f694c1997b02ad1a0077f4f91faaa2c74485ff81ed731"
+      },
+      "expected_profile_differences": [
+        {
+          "level": 1,
+          "field": "affinity",
+          "site": "-25/10",
+          "upstream": "10"
+        },
+        {
+          "level": 2,
+          "field": "affinity",
+          "site": "-25/10",
+          "upstream": "10"
+        },
+        {
+          "level": 3,
+          "field": "affinity",
+          "site": "-25/10",
+          "upstream": "10"
+        }
+      ],
+      "initial_equal_recipes": 3,
+      "note": "Identity candidate only. Recheck at least two recipe levels using independent baseline materials; preserve differing values."
+    },
+    {
+      "id": "weapon-297731",
+      "page": "ida/297731.html",
+      "name": "黑之身orシーク [XX]",
+      "family": 625,
+      "upstream_name": "Verstecken/Chercher 1",
+      "reason": "negative_affinity_missing_in_upstream",
+      "page_sha256": {
+        "ida/297731.html": "3465aba106c4a684b3ca88c226dc766f93f5365dc5ceda0e175485bcde287197"
+      },
+      "expected_profile_differences": [
+        {
+          "level": 1,
+          "field": "affinity",
+          "site": "-25/10",
+          "upstream": "10"
+        },
+        {
+          "level": 2,
+          "field": "affinity",
+          "site": "-25/10",
+          "upstream": "10"
+        },
+        {
+          "level": 3,
+          "field": "affinity",
+          "site": "-25/10",
+          "upstream": "10"
+        }
+      ],
+      "initial_equal_recipes": 2,
+      "note": "Identity candidate only. Recheck at least two recipe levels using independent baseline materials; preserve differing values."
+    },
+    {
+      "id": "weapon-298182",
+      "page": "ida/298182.html",
+      "name": "使徒or魔女 [XX]",
+      "family": 3184,
+      "upstream_name": "Apostel/Sorcière 1",
+      "reason": "negative_affinity_missing_in_upstream",
+      "page_sha256": {
+        "ida/298182.html": "2f17aed11c90accf9fd0f6c8758ffb2e53f11e488fe35027cd6aa1f09d9fc9ef"
+      },
+      "expected_profile_differences": [
+        {
+          "level": 1,
+          "field": "affinity",
+          "site": "-25/15",
+          "upstream": "15"
+        },
+        {
+          "level": 2,
+          "field": "affinity",
+          "site": "-25/15",
+          "upstream": "15"
+        },
+        {
+          "level": 3,
+          "field": "affinity",
+          "site": "-25/15",
+          "upstream": "15"
+        }
+      ],
+      "initial_equal_recipes": 2,
+      "note": "Identity candidate only. Recheck at least two recipe levels using independent baseline materials; preserve differing values."
+    },
+    {
+      "id": "weapon-298508",
+      "page": "ida/298508.html",
+      "name": "躯体or心灵 [XX]",
+      "family": 2402,
+      "upstream_name": "Körper/Esprit 1",
+      "reason": "negative_affinity_missing_in_upstream",
+      "page_sha256": {
+        "ida/298508.html": "f5ea67fc294c75dc48a8ae6da6055176b8e37212e2001bef0f4c123724205571"
+      },
+      "expected_profile_differences": [
+        {
+          "level": 1,
+          "field": "affinity",
+          "site": "-30/15",
+          "upstream": "15"
+        },
+        {
+          "level": 2,
+          "field": "affinity",
+          "site": "-30/15",
+          "upstream": "15"
+        },
+        {
+          "level": 3,
+          "field": "affinity",
+          "site": "-30/15",
+          "upstream": "15"
+        }
+      ],
+      "initial_equal_recipes": 2,
+      "note": "Identity candidate only. Recheck at least two recipe levels using independent baseline materials; preserve differing values."
+    },
+    {
+      "id": "weapon-298846",
+      "page": "ida/298846.html",
+      "name": "获得or失去 [XX]",
+      "family": 2910,
+      "upstream_name": "Gewinn/Perte 1",
+      "reason": "negative_affinity_missing_in_upstream",
+      "page_sha256": {
+        "ida/298846.html": "bf5882be4bbedf0db9feec1c7c8ce4832d618d7ce570fa2a95895dc51eb307d2"
+      },
+      "expected_profile_differences": [
+        {
+          "level": 1,
+          "field": "affinity",
+          "site": "-25/15",
+          "upstream": "15"
+        },
+        {
+          "level": 2,
+          "field": "affinity",
+          "site": "-25/15",
+          "upstream": "15"
+        },
+        {
+          "level": 3,
+          "field": "affinity",
+          "site": "-25/15",
+          "upstream": "15"
+        }
+      ],
+      "initial_equal_recipes": 2,
+      "note": "Identity candidate only. Recheck at least two recipe levels using independent baseline materials; preserve differing values."
+    },
+    {
+      "id": "weapon-298937",
+      "page": "ida/298937.html",
+      "name": "天眼弓･露往霜来 [XX]",
+      "family": 2901,
+      "upstream_name": "Perennial Winter 1",
+      "reason": "element_values_disagree_identity_supported",
+      "page_sha256": {
+        "ida/298937.html": "2910a1c2aa7095f421ff1a9da51d7447b7bf21cbb43d317056babd1c37ceaabf"
+      },
+      "expected_profile_differences": [
+        {
+          "level": 1,
+          "field": "elements",
+          "site": [
+            [
+              "Water",
+              34
+            ]
+          ],
+          "upstream": [
+            [
+              "Water",
+              32
+            ]
+          ]
+        }
+      ],
+      "initial_equal_recipes": 5,
+      "note": "Identity candidate only. Recheck at least two recipe levels using independent baseline materials; preserve differing values."
+    },
+    {
+      "id": "weapon-301785",
+      "page": "ida/301785.html",
+      "name": "正直or虚伪 [XX]",
+      "family": 1136,
+      "upstream_name": "Ehrlich/Faux 1",
+      "reason": "negative_affinity_missing_in_upstream",
+      "page_sha256": {
+        "ida/301785.html": "a28d8b799ea7ad296d8b54141c607dcab2e297babff70a05fae242ac8ee5c5de"
+      },
+      "expected_profile_differences": [
+        {
+          "level": 1,
+          "field": "affinity",
+          "site": "-30/15",
+          "upstream": "15"
+        },
+        {
+          "level": 2,
+          "field": "affinity",
+          "site": "-30/15",
+          "upstream": "15"
+        },
+        {
+          "level": 3,
+          "field": "affinity",
+          "site": "-30/15",
+          "upstream": "15"
+        }
+      ],
+      "initial_equal_recipes": 3,
+      "note": "Identity candidate only. Recheck at least two recipe levels using independent baseline materials; preserve differing values."
+    },
+    {
+      "id": "weapon-301788",
+      "page": "ida/301788.html",
+      "name": "巨龙枪 [XX]",
+      "family": 1132,
+      "upstream_name": "Vermilion Rim 1",
+      "reason": "element_values_disagree_identity_supported",
+      "page_sha256": {
+        "ida/301788.html": "8ee4a9753c46b17180be3850d0a7e1b106aa697c267303e84fc16955a93e33b0"
+      },
+      "expected_profile_differences": [
+        {
+          "level": 2,
+          "field": "elements",
+          "site": [
+            [
+              "Dragon",
+              34
+            ]
+          ],
+          "upstream": [
+            [
+              "Dragon",
+              32
+            ]
+          ]
+        },
+        {
+          "level": 3,
+          "field": "elements",
+          "site": [
+            [
+              "Dragon",
+              33
+            ]
+          ],
+          "upstream": [
+            [
+              "Dragon",
+              34
+            ]
+          ]
+        }
+      ],
+      "initial_equal_recipes": 2,
+      "note": "Identity candidate only. Recheck at least two recipe levels using independent baseline materials; preserve differing values."
+    },
+    {
+      "id": "weapon-302471",
+      "page": "ida/302471.html",
+      "name": "和平or暴政 [XX]",
+      "family": 2661,
+      "upstream_name": "Ruhe/Tyrannie 1",
+      "reason": "negative_affinity_missing_in_upstream",
+      "page_sha256": {
+        "ida/302471.html": "290b2c0fae996158398fccfe126ef43d55a17ccc2f6992d5f09510923d6fc2f4"
+      },
+      "expected_profile_differences": [
+        {
+          "level": 1,
+          "field": "affinity",
+          "site": "-40/15",
+          "upstream": "15"
+        },
+        {
+          "level": 2,
+          "field": "affinity",
+          "site": "-40/15",
+          "upstream": "15"
+        },
+        {
+          "level": 3,
+          "field": "affinity",
+          "site": "-40/15",
+          "upstream": "15"
+        }
+      ],
+      "initial_equal_recipes": 3,
+      "note": "Identity candidate only. Recheck at least two recipe levels using independent baseline materials; preserve differing values."
+    },
+    {
+      "id": "weapon-305879",
+      "page": "ida/305879.html",
+      "name": "笑颜or怒视 [XX]",
+      "family": 885,
+      "upstream_name": "Grinsen/Froncement 1",
+      "reason": "negative_affinity_missing_in_upstream",
+      "page_sha256": {
+        "ida/305879.html": "9a74355ffddd8d4b30fec1f1b659a0d5242b8471e101903e8c8defaad674944d"
+      },
+      "expected_profile_differences": [
+        {
+          "level": 1,
+          "field": "affinity",
+          "site": "-40/20",
+          "upstream": "20"
+        },
+        {
+          "level": 2,
+          "field": "affinity",
+          "site": "-40/20",
+          "upstream": "20"
+        },
+        {
+          "level": 3,
+          "field": "affinity",
+          "site": "-40/20",
+          "upstream": "20"
+        }
+      ],
+      "initial_equal_recipes": 3,
+      "note": "Identity candidate only. Recheck at least two recipe levels using independent baseline materials; preserve differing values."
+    },
+    {
+      "id": "weapon-305891",
+      "page": "ida/305891.html",
+      "name": "祖龙・破坏者 [XX]",
+      "family": 883,
+      "upstream_name": "Old Fatalis Buster 1",
+      "reason": "element_values_disagree_identity_supported",
+      "page_sha256": {
+        "ida/305891.html": "0a36c2ee3bc48d015da72e41b2c88387c465d4709c6a7f2e456396e5017309b3"
+      },
+      "expected_profile_differences": [
+        {
+          "level": 3,
+          "field": "elements",
+          "site": [
+            [
+              "Dragon",
+              75
+            ]
+          ],
+          "upstream": [
+            [
+              "Dragon",
+              73
+            ]
+          ]
+        }
+      ],
+      "initial_equal_recipes": 3,
+      "note": "Identity candidate only. Recheck at least two recipe levels using independent baseline materials; preserve differing values."
+    },
+    {
+      "id": "weapon-306532",
+      "page": "ida/306532.html",
+      "name": "ラフorクライ [XX]",
+      "family": 3428,
+      "upstream_name": "Lache/Sanglot 1",
+      "reason": "negative_affinity_missing_in_upstream",
+      "page_sha256": {
+        "ida/306532.html": "360bf5daf5882de35a23409cf64a0ee2a76ba41337e20801e74b1a93f39cba6e"
+      },
+      "expected_profile_differences": [
+        {
+          "level": 1,
+          "field": "affinity",
+          "site": "-35/20",
+          "upstream": "20"
+        },
+        {
+          "level": 2,
+          "field": "affinity",
+          "site": "-35/20",
+          "upstream": "20"
+        },
+        {
+          "level": 3,
+          "field": "affinity",
+          "site": "-35/20",
+          "upstream": "20"
+        }
+      ],
+      "initial_equal_recipes": 2,
+      "note": "Identity candidate only. Recheck at least two recipe levels using independent baseline materials; preserve differing values."
+    },
+    {
+      "id": "weapon-310140",
+      "page": "ida/310140.html",
+      "name": "咒文or神谕 [XX]",
+      "family": 1889,
+      "upstream_name": "Beschwörung/Oracle 1",
+      "reason": "negative_affinity_missing_in_upstream",
+      "page_sha256": {
+        "ida/310140.html": "0cfc5deca7ad149afcd68418a57e960563806dff39ed4f24a9dd6c91e6e19955"
+      },
+      "expected_profile_differences": [
+        {
+          "level": 1,
+          "field": "affinity",
+          "site": "-20/10",
+          "upstream": "10"
+        },
+        {
+          "level": 2,
+          "field": "affinity",
+          "site": "-20/10",
+          "upstream": "10"
+        },
+        {
+          "level": 3,
+          "field": "affinity",
+          "site": "-20/10",
+          "upstream": "10"
+        }
+      ],
+      "initial_equal_recipes": 2,
+      "note": "Identity candidate only. Recheck at least two recipe levels using independent baseline materials; preserve differing values."
+    },
+    {
+      "id": "weapon-310358",
+      "page": "ida/310358.html",
+      "name": "王牙炮【震雷】 [XX]",
+      "family": 1381,
+      "upstream_name": "Loyal Thunder 1",
+      "reason": "same_profile_disambiguated_by_recipes",
+      "page_sha256": {
+        "ida/310358.html": "f76bcf7d87735f161b6ff040aff1677fa7574956a40f71190f495cb07268d7cd"
+      },
+      "expected_profile_differences": [],
+      "initial_equal_recipes": 3,
+      "note": "Identity candidate only. Recheck at least two recipe levels using independent baseline materials; preserve differing values."
+    },
+    {
+      "id": "weapon-310460",
+      "page": "ida/310460.html",
+      "name": "信任or背叛 [XX]",
+      "family": 1374,
+      "upstream_name": "Verrat/Foi 1",
+      "reason": "negative_affinity_missing_in_upstream",
+      "page_sha256": {
+        "ida/310460.html": "9223e584f9dc3e48c0bbe73eb5968d8d16d93d5098708de9412af4c9d2673ba0"
+      },
+      "expected_profile_differences": [
+        {
+          "level": 1,
+          "field": "affinity",
+          "site": "-30/20",
+          "upstream": "20"
+        },
+        {
+          "level": 2,
+          "field": "affinity",
+          "site": "-30/20",
+          "upstream": "20"
+        },
+        {
+          "level": 3,
+          "field": "affinity",
+          "site": "-30/20",
+          "upstream": "20"
+        }
+      ],
+      "initial_equal_recipes": 2,
+      "note": "Identity candidate only. Recheck at least two recipe levels using independent baseline materials; preserve differing values."
+    }
+  ],
+  "item_constraint_exclusions": [
+    {
+      "id": "rudra-fang-claw-conflict",
+      "page": "ida/234849.html",
+      "level": 1,
+      "kind": "Create",
+      "locator": "/html/body/div/div/div[3]/div[1]/table/tr[2]/td[2]",
+      "item_page": "ida/188750.html",
+      "quantity": 4,
+      "upstream_weapon_id": 997121,
+      "upstream_conflicting_item_id": 1383,
+      "page_sha256": {
+        "ida/234849.html": "cdc22265bb66aa0e7dac2cddd413768fbcca93b3d83b7f32ed3398c05b47fa31",
+        "ida/188750.html": "09e18b0afdbd3ab2a39950ef31fa0fee48247648cf1bc43d2b45465c1cc4afa2"
+      },
+      "research_note": "rudra-fang-versus-claw",
+      "reason": "Isolate the one fang/claw recipe disagreement from item identity inference. Preserve both recipe versions."
+    }
+  ],
+  "unlinked_ingredients": [
+    {
+      "id": "unlinked-288458",
+      "page": "ida/288458.html",
+      "level": 1,
+      "kind": "Create",
+      "locator": "/html/body/div/div/div[3]/div[1]/table/tr[2]/td[2]",
+      "raw_text": "新红莲石 x4",
+      "item_page": "ida/280911.html",
+      "upstream_item_id": 327,
+      "quantity": 4,
+      "page_sha256": {
+        "ida/288458.html": "b0b218449162f205f930203fe0f2f7744e676c2bb4d7a2bebdd17e727fd53f32",
+        "ida/280911.html": "ebc47ba17e651c3c9beae63f268b45b034d8aa34fd3883ed53c72295d7e1f04b"
+      },
+      "research_note": "unlinked-allfire-stone"
+    },
+    {
+      "id": "unlinked-288520",
+      "page": "ida/288520.html",
+      "level": 1,
+      "kind": "Create",
+      "locator": "/html/body/div/div/div[3]/div[1]/table/tr[2]/td[2]",
+      "raw_text": "青电主狩猎之证1 x1",
+      "item_page": "ida/301468.html",
+      "upstream_item_id": 2038,
+      "quantity": 1,
+      "page_sha256": {
+        "ida/288520.html": "dfa03ddec26adabcd6eeb825d22ffe2064279217baddf58df3c8265ac40a1a9d",
+        "ida/301468.html": "b67942859fdacc8b04aeb434b848cd809da77605a63236c04803e8abefad01d0"
+      },
+      "research_note": "unlinked-boltreaver-ticket"
+    }
+  ]
+}

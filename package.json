@@ -1,0 +1,11 @@
+{
+  "name": "mhxx-reference-frontend",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/frontend.test.mjs tests/frontend-dom.test.mjs"
+  },
+  "devDependencies": {
+    "happy-dom": "21.0.4"
+  }
+}

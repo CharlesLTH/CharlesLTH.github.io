@@ -1,0 +1,204 @@
+MHXX 数据整理流程（2026-10-22，数据库schema_version=6，静态API v1）
+
+schema 6增加site_weapon_branches：从原页“可强化/派生”列提取798条跨路线链接，
+按目标页及该页等级名称精确解析目标等级，保留来源等级、原文标签和XPath。
+前端将其与已有10911个连续强化等级组成794棵武器树；1592条路线的最终等级与原版
+14类最终武器目录核对一致。统计和排序不混用各等级的属性。
+
+schema 5增加site_monster_quests：从怪物原页提取任务出场列表及同场怪物、乱入、数量、
+地点、原站相对体力/全体防御强度条，逐条保留来源定位；不将条形图长度当作实际游戏数值。
+
+一、边界与来源
+
+最初开发基于原站 games/mhxx/ 的稀疏检出；发布仓库现按完整网站快照整理，main以新初始提交开始。
+原站现已移动至 games/mhxx_old/，构建只从该归档读取 HTML，数据库输出到 build/database/。
+新版前端生成至 games/mhxx/，通过静态JSON读取数据；不要将生成目录作为提取输入。
+归档仅修改入口index.html的绝对跳转为index/，其余文件保持原样。新版不提供旧站入口。
+前端静态数据导出位于build/site-data/v1/；数据库结构和公开API版本分别管理。
+无历史的初始构建允许来源commit为null，仍保存每页SHA-256，不依赖旧Git历史完成提取与核对。
+
+中文及部分日文文本来源（归档前的历史地址，数据层保留原来源URL）：
+  https://github.com/CharlesLTH/CharlesLTH.github.io/tree/main/games/mhxx
+  https://charleslth.github.io/games/mhxx/
+该站沿用了 wiki.mhxg.org 的页面结构。当前流程将本地 HTML 快照视为独立来源，
+并不依赖原网站后台，也不宣称已经取得其数据库。
+
+MHGU 数据来源：
+  https://github.com/gatheringhallstudios/MHGenDatabase
+  固定提交：6ec3ce73f4f4def80f04413094fa0fc033787ee2
+  文件：app/src/main/assets/databases/mhgu.db.zip
+  压缩包和数据库本体的 SHA-256 均在 sources/mhgu-db.json 中固定。
+  上游仓库许可证副本：third-party/mhgu-database/LICENSE.txt。
+  这份软件许可证不被解释为对游戏本身素材权利的额外授权。
+
+本流程不需要游戏 ROM，也不需要运行解包器或模拟器。
+网页文件编号、社区数据库 ID、游戏原生 ID 是三个不同的概念。
+不能把网页 ida/218099.html 或社区 weapon._id 当成已验证的游戏原生 ID。
+
+二、操作
+
+所有命令在项目根目录运行。安装命令与基本用法见 README.txt。
+  scripts/data.py fetch   仅下载固定来源，验证哈希；缓存存在时离线验证。
+  scripts/data.py build   读取缓存、解析所有 HTML、生成 SQLite 和报告，不访问网络。
+  scripts/data.py check   只读检查 SQLite、外键基线与关键业务关联。
+  scripts/data.py summary 输出数据库中保存的完整审计摘要。
+  scripts/data.py search  按网站武器名搜索，最多100条，保留等级。
+  scripts/data.py weapon  按网页编号和等级输出配方及素材出处。
+  scripts/data.py monster/quest/armor/skill  查询本地详情及关系。
+  scripts/data.py item    查询本地道具、怪物与任务奖励出处、防具材料用途及上游候选。
+  scripts/data.py map     按地图、区域、难度查询采集点及原始概率。
+  scripts/data.py combine 按结果或材料名查询调合；包含没有道具详情链接的弹药/瓶。
+  scripts/data.py export  只读数据库，生成全量核心实体、目录、搜索索引及分页关联。
+  scripts/data.py verify-export 校验导出包哈希、引用、分页、目录与源记录覆盖率。
+  scripts/data.py serve-data 仅监听127.0.0.1的只读静态数据预览，可模拟Pages子目录。
+
+可以在子命令前使用 --database PATH 指定另一个输出/查询数据库。
+同一个输出路径不支持并发构建；构建使用固定 .sqlite.staging 文件。
+成功完成检查后才替换现有 SQLite；失败时现有 SQLite 保持可用。
+
+三、数据处理
+
+1. 每个 HTML 页面保存路径、分类、标题和 SHA-256，整体目录清单也计算哈希。
+2. 仅解析页内 $('.cpg...').html('字面量')；不执行 JavaScript。
+   缺少值或出现冲突时构建失败，避免把空占位符误当成真实空值。
+3. 提取武器各等级的攻击、孔槽、会心、防御、属性、显示名称与原始性能列。
+   斩味暂存为页面像素宽度，不擅自换算成上游 sharpness 单位。
+4. 配方区分强化与直接生产，区分实物素材与素材点数，排除输出端材。
+   路径表中其他武器的配方作为祖先信息保留，不记到当前武器名下。
+   无链接的材料文本保留在 unparsed_json；已复核的两处引用另存 reviewed_recipe_items。
+5. 原 MHGU SQLite 全量复制后新增 site_*、*_matches、审计表与查询索引。
+   不覆盖原来的任何数据行；集成测试逐表、逐行比较源库和导入库。
+
+目前已抽取网站全部武器路线及道具基本文本，并加入130个怪物页、1337个任务页、
+656个防具套装页和205个技能页。防具细分为5685件装备。
+怪物/任务奖励、防具技能点与配方等关系已有独立表；其他辅助表保留带XPath的单元格观察。
+地图采集已抽取24页、528张分区难度表、14890条记录，调合已抽取183条配方。
+商店、交易、随从装备等页面尚未专门抽取，仍保留原文件与清单哈希。
+上游的武器、防具、任务、技能、掉落等表可以查询，但仍代表 MHGU 来源。
+
+四、对应关系的证据等级
+
+武器：以类型、整条路线的等级/攻击/孔槽/会心/防御/属性组合匹配。
+只有两侧都唯一才建立候选 family。特殊属性没有参加此轮等价性判断。
+
+  unmatched                    无精确性能候选
+  ambiguous                    至少一侧存在同性能的多条路线
+  profile_unique               只有唯一性能证据，尚无足够独立材料支持
+  profile_with_recipe_support  至少一份配方获得独立实物材料支持，已可比较配方无矛盾
+  profile_with_recipe_conflicts 已可比较配方存在矛盾，保留候选与冲突
+  reviewed_identity_with_recipe_support 通过固定复核记录和至少两个独立配方等级建立身份候选
+  reviewed_identity_with_recipe_conflicts 复核身份仍有配方矛盾
+
+“支持”不表示整条路线所有配方、分支、金额、斩味或特殊属性全部正确。
+没有以整行合并或直接替换的方式接受任何候选。
+
+素材：用候选武器配方中相同数量的材料构造候选集合，再跨路线取交集。
+必须至少有两条不同武器路线支持，且没有多对一碰撞，才给出 recipe_inferred。
+不足、歧义、冲突均保留候选与全部证据，不强制决定。
+轰龙牙的一个争议配方约束被精确排除后，其身份状态为 recipe_inferred_with_exclusions；
+被排除的证据仍在 evidence_json 中，原配方并未改变。
+目前素材映射仅涵盖参与武器配方且有足够证据的道具，不涵盖所有2450个道具。
+
+配方复核：验证某条武器时，重新排除该武器整条路线提供的素材证据；
+每种素材仍需至少两条其他路线支持唯一映射，避免用同一配方证明自己。
+只核对实物素材集合及数量，点数池和前置武器另外保留，尚未验证等价性。
+Create 与 Create B 被视为上游的备选配方，不会累加为一份配方。
+
+第二阶段复核登记：sources/reviews.json 固定29条武器身份、2处无链接材料注释、
+1条局部约束排除。全部绑定输入页面哈希和上游数据库哈希。
+武器身份复核必须重现登记的每一处性能差异，并由原始精确匹配得到的素材候选
+独立支持至少两个配方等级；新增身份不会相互作为初始身份验证的依据。
+任一可比较配方矛盾都会拒绝身份复核规则。来源变化后，不会悄悄继续应用旧规则。
+
+五、表与来源追踪
+
+原表（保持名称与数据）：
+  items、weapons、armor、components、quests、quest_rewards、hunting_rewards、
+  gathering、monsters、locations、skills、skill_trees、item_to_material 等。
+  components 中 parent weapon 是武器升级边，Materials 类型的 quantity 是点数。
+  item_to_material.amount 表示一种实物可提供多少素材点数。
+
+新增表：
+  source_manifest       上游版本/哈希、网站快照、工具源码哈希、验证结果
+  site_pages            全部 HTML 清单与文件哈希
+  site_items            道具显示名、基本信息行
+  site_weapon_lines     类型、祖先路径、解析问题
+  site_weapon_levels    每等级性能、显示文本、原页面 XPath
+  site_recipes          配方类型、费用、原文、XPath、未解析文本
+  site_recipe_items     实物材料的网页 ID 与数量
+  site_recipe_points    素材池标签与点数，单位不混用
+  weapon_matches        武器候选、状态、证据
+  item_matches          素材候选、状态、全部约束证据
+  recipe_checks         独立实物素材核对结果
+  audit_differences     两个来源的差异值与对应配方
+  data_reviews          固定复核登记，包括来源、依据与预期输入
+  reviewed_recipe_items 无链接材料的显式引用注释，和原始链接分开
+  weapon_value_differences  复核身份后仍存在的性能差异，不覆写任一来源
+  cost_reviews          费用差异分类，分类不意味着已确认游戏内部公式
+  site_domain_pages     怪物/任务/防具/技能实体页、元数据、辅助表观察与解析问题
+  site_rewards          本地怪物及任务奖励；次数、数量、概率、等级/条件分开
+  site_monster_hitzones  部位肉质，保留条件值与换行；解释保存在实体页notes_json
+  site_quest_references  任务目标、地图、怪物等原始链接与角色，不按同名猜测引用
+  site_armor_pieces      单件防具、部位、原文适用类型/性别、基础与强化后防御、耐性、孔槽
+  site_armor_skills      防具到本地技能页、技能点
+  site_armor_recipes/site_armor_recipe_items/site_armor_recipe_points  套装配方及实物/点数
+  site_skill_activations 各技能系统的发动技能、阈值与效果原文
+  domain_matches        怪物/任务/单件防具候选及明确的比较范围
+  domain_value_differences  已对应防具的最大防御差异，保留两侧数值
+  site_maps             地图名称、图片路径、原站说明及解析问题
+  site_map_sections     区域/难度、空表状态、原始表观察
+  site_gathering_nodes  点位、固定/随机、普通/稀有、采集次数范围/无限、图标路径
+  site_gathering        逐项道具、数量、概率、原行锚点与XPath
+  site_combining_catalog/site_combining/site_combining_inputs  调合目录、结果/产量范围/成功率、两种原料
+  location_candidates   来自已有任务候选的地图目的地证据，允许昼夜指向同一本地页
+  gathering_checks      在有限范围内比较采集行；不等于完整点位或概率验证
+  combining_matches     至少两个已知素材角色支持的调合候选，不补写无链接结果身份
+
+视图 candidate_weapon_labels 与 candidate_item_labels 提供便利查询，
+命名中特意保留 candidate，调用方必须展示/处理匹配状态。
+annotated_recipe_items 汇总原始链接和复核注释，用 reference_origin 标记来源。
+mhxx_recipe_costs 给出网站显示价格、原始 MHGU 价格和差异状态；显示价格默认沿用本地 HTML。
+site_item_reward_sources 统一查询本地素材的怪物与任务奖励出处。
+site_item_gathering_sources 统一查询本地地图、区域、点位、难度及道具记录。
+第三阶段抽取细节、匹配条件与限制见 docs/local-domains.txt。
+第四阶段的采集次数、稀有点、参考概率与调合处理见 docs/acquisition.txt。
+第五阶段的稳定公开ID、相对href、客户端分页和数据版本规则见 docs/static-api.txt。
+
+例：查询网站武器、上游名称与候选状态：
+  SELECT page,level,name,upstream_id,upstream_name,match_status
+  FROM candidate_weapon_labels WHERE page='ida/218099.html';
+
+weapon 查询将本地 site_sources 与导入的 mhgu 来源分开，分别保留页面XPath或上游行ID、条件。
+--limit 只限制各类出处展示的样本数，同时输出总数；样本不是路线推荐。
+概率按上游记录保留，不跨奖励槽、地图点或不同等级相加。
+
+六、当前问题与后续顺序
+
+费用：补齐29条身份后，共发现1143条制作、3687条强化的原始费用差异。
+上游 Android 界面直接显示 creationCost/upgradeCost，没有在显示层额外乘倍率。
+Kiranico 的 MHXX 和 MHGU 样例页面均与导入库一致，不能将此直接判为地区版本差异。
+已按数值关系和来源条件分类，见 docs/reconciliation.txt；不套用自动乘数修正。
+
+匹配：1585条上游路线、10877个上游等级都已有一一对应的站点记录。
+网站另有7条路线、34个等级未在此库中找到对应，继续保留在 site_* 中。
+29条新身份通过配方复核，52处性能字段差异仍保留。
+轰龙牙/爪争议已定位到 ida/234849.html 的LV1生产配方；素材身份已恢复推断，
+但该配方仍明确标记 physical_ingredients_differ，未静默换牙为爪。
+两处无链接材料通过注释补足，原始文本和未解析字段仍保留以供追溯。
+
+上游外键：原库有2621条 PRAGMA foreign_key_check 违例：
+  skills 指向不存在的单数 skill_tree（326条，实际表为 skill_trees）；
+  meow_rewards 指向单数 meow_location（1168条，实际表为 meow_locations）；
+  quests.permit_monster_id 用0表示无许可怪物（1127条）。
+本阶段保留源定义，并记录完整违例清单的哈希；任何新增或变化都会失败。
+按实际表名和0约定另外验证关联，目前已检查的关键关系无悬空记录。
+后续生产数据库应使用新定义的干净 schema，而不是继续沿用上游外键缺陷。
+
+建议下一阶段：
+  1. 对仍有争议的游戏价格和材料，取得游戏实测或可核验原始表后再确定修正值。
+  2. 根据重构首版需要，补齐商店/交易、随从装备等剩余结构，并继续处理候选歧义。
+  3. 继续规范跨来源实体、翻译与版本差异。当前API ID明确使用来源命名空间，未宣称原生游戏ID。
+  4. 使用已生成的JSON API与客户端，实现武器→素材→本地出处的首个前端纵向样例。
+
+SQLite 可以作为构建期的数据源；保留 GitHub Pages 部署不要求运行数据库服务器。
+需要实时多人写入或登录功能时，再单独评估服务端数据库。

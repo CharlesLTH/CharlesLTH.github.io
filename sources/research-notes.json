@@ -1,0 +1,49 @@
+{
+  "reviewed_at": "2026-10-21",
+  "scope": "Source-level evidence only; no game executable or original game data was available for price verification.",
+  "observations": [
+    {
+      "id": "app-prices-displayed-verbatim",
+      "url": "https://github.com/gatheringhallstudios/MHGenDatabase/blob/6ec3ce73f4f4def80f04413094fa0fc033787ee2/app/src/main/java/com/ghstudios/android/features/weapons/detail/WeaponDetailFragment.kt#L79",
+      "observation": "Lines 79–80 display weapon.creationCost and weapon.upgradeCost followed by z. This display path does not multiply either value. WeaponCursor.kt lines 51–52 read both database columns directly.",
+      "conclusion": "The observed price discrepancy is not a missing display multiplier in our importer. The correctness of the stored game prices is still unresolved."
+    },
+    {
+      "id": "same-price-across-kiranico-versions",
+      "urls": ["https://mhgu.kiranico.com/weapon/34ed4", "https://mhxx.kiranico.com/buki/34ed4"],
+      "observed_values": {"weapon": "Petrified Blade / ベルダーブレイド", "level_1_price": 850, "level_11_price": 17000},
+      "site_values": {"page": "ida/218099.html", "level_1_create": 1275, "level_11_improve": 22100},
+      "conclusion": "Both Kiranico editions agree with the imported raw values for this example. Merely labeling the difference MHXX versus MHGU would be unsupported. Shared data lineage is possible, so this is not two independent confirmations of game correctness."
+    },
+    {
+      "id": "rudra-fang-versus-claw",
+      "urls": ["http://wiki.mhxg.org/ida/234849.html", "https://mhgu.kiranico.com/weapon/5a0db"],
+      "observed_values": {"site_material": "轰龙牙 x4", "original_site_material": "轟竜の牙 x4", "kiranico_material": "Tigrex Claw x4", "upstream_component_row": 46887},
+      "conclusion": "A localized recipe conflict already exists between the source sites. Exclude this one ingredient occurrence from identity inference, preserve the recipe conflict, and do not relabel all Tigrex Fang records as claws."
+    },
+    {
+      "id": "unlinked-allfire-stone",
+      "urls": ["http://wiki.mhxg.org/ida/288458.html", "https://mhgu.kiranico.com/item/5043a"],
+      "observed_values": {"site_material": "新红莲石 x4", "original_site_material": "新紅蓮石 x4", "upstream_item": "Allfire Stone", "upstream_item_id": 327, "site_target": "ida/280911.html", "site_target_name": "真红莲石"},
+      "conclusion": "Treat this as an explicitly reviewed alias annotation, supported by the complete corresponding recipe. Keep the original text unchanged."
+    },
+    {
+      "id": "unlinked-boltreaver-ticket",
+      "urls": ["http://wiki.mhxg.org/ida/288520.html", "https://mhgu.kiranico.com/weapon/98783"],
+      "observed_values": {"site_material": "青电主狩猎之证1 x1", "site_target": "ida/301468.html", "upstream_item_id": 2038},
+      "conclusion": "The literal material name has a matching local item page; an independent complete recipe supports the annotation."
+    },
+    {
+      "id": "dual-affinity-cross-check",
+      "url": "https://mhgu.kiranico.com/greatsword",
+      "observed_values": {"weapon": "Licht/Ombre", "level_1_affinity": "-45% → +20%", "upstream_database_affinity": "20", "site_page": "ida/292565.html", "site_affinity": "-45/20"},
+      "conclusion": "For this example, the MHGU web page also retains both affinity values. The community SQLite field is incomplete. The other thirteen dual-affinity identity reviews are independently gated by their recipes; no global numeric rewrite is applied."
+    }
+  ],
+  "price_policy": {
+    "project_display_source": "local MHXX HTML",
+    "classification_only": true,
+    "automatic_multiplier_corrections": false,
+    "reason": "Preserve current site behavior while keeping raw MHGU prices and explicit disagreement status available. A matching arithmetic pattern alone does not establish a game rule."
+  }
+}

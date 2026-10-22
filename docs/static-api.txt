@@ -1,0 +1,149 @@
+第五阶段：前端静态数据接口（2026-10-21）
+
+本阶段结果
+
+提供无框架依赖的浏览器客户端和静态JSON API v1。生产访问只需要静态文件托管，
+Python服务器仅用于本机预览，不是线上服务端依赖。
+源站HTML、审计数据库及MHGU原始表均保持原样，没有部署或修改线上页面。
+
+完整导出6577个实体：武器路线1592、道具2450、怪物130、任务1337、防具套装656、
+技能系统205、地图24、调合配方183。防具单件和武器等级包含在相应实体详情中。
+武器10911个等级/11275份配方、防具5685件/8268份配方、44448条怪物/任务奖励、
+14890条采集记录、366个调合原料槽等均检查源数据库与导出数量一致。
+本版未导出辅助原始表快照，也未补齐尚未抽取的商店、交易、随从装备等领域。
+
+完整包约100MB，详情及关联分页通常远小于此大小。名称索引约1.6MB，首次搜索时读取。
+不会为每次查询下载整个数据包；客户端按当前详情和所需关联页请求。
+地图图片和图标仍引用原站资源URL，未复制进数据包；保留原始source_path供后续迁移资源使用。
+
+构建、校验与预览
+
+  .venv/bin/python scripts/data.py build
+  .venv/bin/python scripts/data.py export
+  .venv/bin/python scripts/data.py verify-export
+  .venv/bin/python -m pytest -q
+  .venv/bin/python scripts/data.py serve-data --port 8765 --prefix /games/mhxx/data-api/v1/
+
+已有数据库时可直接export。数据库通过只读连接打开，导出前后检查其文件哈希未变。
+export --page-size默认100，允许1～200；--output指定输出目录。
+目标只能是新路径或通过完整校验的既有生成包；发现用户文件、符号链接或损坏包即拒绝覆盖。
+构建在临时目录完成并通过校验后替换旧包，失败保留旧包；不支持同时对同一目录导出。
+相同数据库、导出器/客户端代码和分页大小产生相同文件字节及dataset_revision。
+源数据库重新构建后的文件哈希可能改变，这会产生新的dataset_revision。
+
+预览仅监听127.0.0.1，只允许GET/HEAD；不会公开仓库文件或目录列表。
+支持正确的JSON/JavaScript MIME、ETag/304及子目录前缀。停止预览使用Ctrl-C。
+预览期间替换导出包后，需要重启预览服务；浏览器应创建新的客户端实例。
+完整测试会启动临时本地HTTP服务并使用已有Node运行客户端，不下载依赖或浏览器。
+
+目录与URL
+
+API根目录默认为build/site-data/v1/。根目录内容可作为站点data-api/v1/下的静态文件发布。
+实际上传/发布尚未执行，路径是否纳入上层站点的构建需在部署阶段确认。
+
+  manifest.json                         入口、版本、来源、策略、覆盖率、目录
+  integrity.json                        全部生成文件的SHA-256和长度（不包含它自己）
+  search.json                           所有实体名称、武器升级名和单件防具别名
+  client.mjs                            浏览器ES模块
+  catalogs/weapons/1.json                武器目录第1页
+  weapons/218099.json                    贝鲁纳大剑路线及全部等级/配方
+  items/219263.json                      圆盘石详情与出处/用途集合描述
+  items/189643/gathering/1.json           药草采集出处第1页
+  monsters/1829.json                     斩龙详情、肉质、奖励/任务集合描述
+  quests/218315.json                     任务详情与奖励集合描述
+  armor/218352.json                      贝鲁纳系列单件、防具技能与配方
+  skills/183534.json                     加护系统与防具关联
+  maps/2400.json                         古代林分区导航与采集集合描述
+  combining/210126.json                  无道具链接的LV2通常弾调合
+  licenses/mhgu-database.txt             上游软件许可证副本
+
+href均相对于API根目录，不是相对于当前JSON文件。它们不包含站点域名或站点根目录前缀。
+例如items/219263.json可在任意静态托管子目录下使用。source.url等url字段则是外部来源或资源URL。
+
+公开ID与来源
+
+  weapon:site-218099
+  item:site-219263
+  monster:site-1829
+  combining:site-210126
+
+这些是带类型和来源命名空间的站内公开键，源于页面编号或调合原行锚点。
+不依赖SQLite自增行号，不是游戏原生ID，也没有宣称是跨所有版本统一的正式实体ID。
+同一来源记录重新导出保持相同公开键。未来跨来源归并应增加别名/映射，避免悄悄改键。
+武器等级用路线ID+level选择；防具单件ordinal用于当前套装内部定位，不作为跨来源ID。
+comparison.candidate_id_kind区分weapon_family、item、monster、quest、armor、combining_recipe。
+API v1与审计数据库schema 6独立管理，破坏公开约定的变化应使用新API主版本。
+武器data.branches保留来源等级、target引用、target_level、原文label及source_xpath，
+data.parents提供反向导航；798条跨武器派生均来自本地原页“可强化/派生”栏的明确链接。
+同一路线内的连续等级来自已有等级表；不使用MHGU候选ID推测本地派生关系。
+怪物quests关系现包含原版出场列表：objective、location、monsters（数量与乱入）、
+rank_label、strength以及来源page/xpath。strength.health/defense是原站0–100显示刻度，
+不是HP或防御百分比；scale字段明确标记其语义。原站没有数值时保留null。
+数据库site_monster_quests保留2347条来源记录，包含原站重复的沙龙王记录及374条无强度的记录。
+
+详情约定
+
+实体详情包含api_version、dataset_revision、type="entity"、id、kind、name、href、aliases、
+source、data、relations、comparison。source保存原页、页面哈希和来源URL。
+data使用本地MHXX观察值，comparison只提供MHGU候选和有限比较证据；不自动覆盖本地值。
+
+武器data包含weapon_type和levels；每等级含性能、recipes、performance_differences。
+配方区分ingredients与material_points，money沿用本地费用，cost_comparison保留另一来源。
+例如贝鲁纳大剑LV1仍是1275z，同时保留MHGU的850；混沌黑蚀龙武器的负/正会心不会丢失。
+道具基本属性暂存basic_rows原始字段列表；本阶段没有重译全部字段或完成分类体系。
+任务提供objective、sub_objective、quest_type、destination_text、time_minutes及奖励/契约费用，
+同时保留metadata原文。怪物条件肉质仍是文本值，并带解释notes。
+防具data含pieces与共享recipes，技能通过实体引用连接；技能页反向提供armor集合。
+地图data.sections给出area、rank、empty_text及relation名称，按名称在relations中取得采集集合。
+调合data.result可能为null，但result_label、输入、产量范围与成功率仍完整保留。
+
+缺值用null，不猜测填充。采集普通/稀有变体、无限次数、原概率之和均保留，不归一化。
+无链接奖励、弹药和瓶不会因没有item引用而被删掉。原始XPath用于审计，界面不必显示。
+
+关联与分页
+
+relations的每个集合描述为：
+  {"type":"collection","total":337,"page_size":100,"href":"items/189643/gathering/1.json"}
+
+空集合是total=0、href=null，无需发HTTP请求。
+非空分页返回type="collection_page"、owner、relation、total、page、page_size、items、links。
+links.next/previous为{href:...}或null。末页可以少于page_size，total始终为整个集合的数量。
+每页带相同dataset_revision，客户端发现混合数据版本会拒绝继续并要求创建新实例。
+调用方应按需翻页或iterate遍历，不能把第一页面当作全部记录。
+
+道具关系：rewards、gathering、combining_outputs、combining_inputs、weapon_uses、armor_uses。
+怪物关系：rewards、quests。任务关系：rewards。技能关系：armor。地图按区域和难度分集合。
+每个实体引用统一包含id、kind、name、href，可直接交给客户端get。
+
+浏览器调用示例（在对应HTTP站点中运行）
+
+  import { createDataClient } from "/games/mhxx/data-api/v1/client.mjs";
+  const api = createDataClient({ baseUrl: "/games/mhxx/data-api/v1/" });
+  const matches = await api.search("贝鲁纳大剑", { kind: "weapon", limit: 20 });
+  const weapon = await api.get(matches.items[0]);
+  const level = weapon.data.levels.find(value => value.level === 3);
+  const material = await api.get(level.recipes[0].ingredients[0].item);
+  const sources = await api.page(material.relations.gathering);
+  const map = await api.get(sources.items[0].map);
+
+全量遍历药草的337条采集记录：
+
+  const herb = await api.get("item:site-189643");
+  for await (const entry of api.iterate(herb.relations.gathering)) {
+    // entry含地图引用、区域、难度、点位、数量、概率及采集次数。
+  }
+
+其他入口：api.manifest()、api.list("item", 2)、api.page(collection, 2)。
+search支持kind过滤及offset/limit，按NFKC、大小写及空白归一化做名称/别名字面子串搜索。
+空查询返回空结果；%不作为通配符。服务端不接受SQL或动态筛选，筛选由浏览器客户端完成。
+API客户端缓存本次会话已读取的JSON；外部href和跳出API根目录的路径会被拒绝。
+
+验证范围
+
+每个文件校验大小及SHA-256；每个内部href和实体ID核对目标；目录与搜索必须覆盖所有实体。
+分页总量、连续页码、前后页链接以及核心源记录数量全部验证，导出不是CLI查询样本拼接。
+HTTP测试在/games/mhxx/data-api/v1/前缀下完成武器→素材→地图、四页采集遍历、名称检索、
+无链接弹药访问，并检查HEAD、304、拒绝写入和越界路径。
+本阶段完整测试74项通过；生成15121个文件、8076个非空分页集合，核验284684处内部链接。
+同一输入重复导出的文件清单及全部文件哈希一致，导出前后数据库文件哈希不变。
+前端搜索、武器详情与素材出处页面已在第六阶段接入，见docs/frontend.txt。

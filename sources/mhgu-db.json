@@ -1,0 +1,12 @@
+{
+  "name": "Gathering Hall Studios MHGU Database",
+  "repository": "https://github.com/gatheringhallstudios/MHGenDatabase",
+  "commit": "6ec3ce73f4f4def80f04413094fa0fc033787ee2",
+  "archive_path": "app/src/main/assets/databases/mhgu.db.zip",
+  "archive_sha256": "832ecd5c1976dc048d9ea2927d4d1e8bc357703e3e8ec6a894af61ccf14af769",
+  "database_sha256": "95fc6ebaabccf4b6a6ca30887f708de5e32dc0f7f7a96d41011b2a51ecf7a2d3",
+  "database_member": "mhgu.db",
+  "license_path": "third-party/mhgu-database/LICENSE.txt",
+  "scope": "MHGU community database; its identifiers are not asserted to be native game IDs.",
+  "archive_url": "https://raw.githubusercontent.com/gatheringhallstudios/MHGenDatabase/6ec3ce73f4f4def80f04413094fa0fc033787ee2/app/src/main/assets/databases/mhgu.db.zip"
+}

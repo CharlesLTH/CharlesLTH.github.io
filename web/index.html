@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f6f8f9">
+  <meta name="description" content="MHXX 资料库：检索武器、素材、怪物和任务，查询升级配方与获取途径。">
+  <title>MHXX 资料库</title>
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./styles.css">
+  <script type="module" src="./app.mjs"></script>
+</head>
+<body>
+  <a class="skip-link" href="#content">跳到资料内容</a>
+  <header class="topbar">
+    <a class="brand" href="#home" aria-label="MHXX 资料库首页"><span class="brand-mark">XX</span><strong>MHXX<span>资料库</span></strong></a>
+    <form class="search-box" role="search" id="search-form">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
+      <input id="search" type="search" autocomplete="off" placeholder="搜索武器、素材、怪物…" aria-label="搜索全部资料">
+      <kbd>⌘ K</kbd>
+    </form>
+    <button class="icon-button top-bookmark" id="show-saved" aria-label="查看收藏" title="查看收藏"></button>
+    <button class="icon-button mobile-menu" id="menu-toggle" aria-label="资料分类" aria-controls="sidebar" aria-expanded="false"><span>分类</span></button>
+  </header>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar" aria-label="资料分类"><nav id="navigation"></nav><div class="sidebar-foot"><span class="status-dot"></span> MONSTER HUNTER XX<br><span>按需查询 · 本地收藏</span></div></aside>
+    <main id="content" tabindex="-1"><div id="page"><div class="initial-loading" role="status">正在读取资料索引…</div></div></main>
+  </div>
+  <div class="hover-card" id="hover-card" role="tooltip" hidden></div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <noscript><p>请启用 JavaScript 以浏览资料库。</p></noscript>
+</body>
+</html>

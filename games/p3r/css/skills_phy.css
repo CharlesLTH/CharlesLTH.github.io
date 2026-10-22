@@ -1,0 +1,114 @@
+/* 基本的表格样式 */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #b0b0b0;
+    padding: 0.4vw;
+    text-align: left;
+    font-size: 0.8vw; /* 字体大小随视口宽度变化 */
+}
+
+thead th {
+    background-color: #333;
+    color: white;
+}
+
+tbody td {
+    background-color: #fff;
+}
+
+/* 设置不同 data-name 的列宽度 */
+th[data-name="cha"],
+td[data-name="cha"] {
+    width: 3%;
+}
+
+th[data-name="技能"],
+td[data-name="技能"] {
+    width: 8%;
+}
+
+th[data-name="属性"],
+td[data-name="属性"] {
+    width: 3%;
+}
+
+th[data-name="HP"],
+td[data-name="HP"] {
+    width: 3%;
+}
+
+th[data-name="数据"],
+td[data-name="数据"] {
+    width: 3%;
+}
+
+th[data-name="倍率"],
+td[data-name="倍率"] {
+    width: 3%;
+}
+
+th[data-name="次数"],
+td[data-name="次数"] {
+    width: 3%;
+}
+
+th[data-name="命中率"],
+td[data-name="命中率"] {
+    width: 3%;
+}
+
+th[data-name="暴击率"],
+td[data-name="暴击率"] {
+    width: 3%;
+}
+
+th[data-name="异常1"],
+td[data-name="异常1"] {
+    width: 4%;
+}
+
+th[data-name="异常率1"],
+td[data-name="异常率1"] {
+    width: 3%;
+}
+
+th[data-name="异常2"],
+td[data-name="异常2"] {
+    width: 4%;
+}
+
+th[data-name="异常率2"],
+td[data-name="异常率2"] {
+    width: 3%;
+}
+
+th[data-name="效果"],
+td[data-name="效果"] {
+    width: 15%;
+}
+
+th[data-name="抽卡"],
+td[data-name="抽卡"] {
+    width: 3%;
+}
+
+th[data-name="内置LV"],
+td[data-name="内置LV"] {
+    width: 3%;
+}
+
+th[data-name="特殊"],
+td[data-name="特殊"] {
+    width: 5%;
+}
+
+th[data-name="习得方式"],
+td[data-name="习得方式"] {
+    width: 28%;
+}
+
+/* 以此类推，为其他 data-name 设置宽度，确保总和为 100% */

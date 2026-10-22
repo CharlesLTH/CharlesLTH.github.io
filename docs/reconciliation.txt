@@ -1,0 +1,100 @@
+第二阶段复核结果（2026-10-21）
+
+这一步的目标是区分“身份没有对上”和“同一实体的数据不同”。
+对应到同一武器，不代表接受 MHGU 库所有数值；数据差异仍可单独存在。
+
+已完成的对应
+
+原先36条未明确对应的路线中，29条已有可重跑的配方证据：
+  14条：混沌黑蚀龙武器，网站有负/正双会心，上游 SQLite 只保留了正会心。
+   9条：整条路线基本一致，但有一到两个属性数值不同。
+   6条：多把重弩基础性能相同，配方能区分身份。
+
+每条复核记录都必须满足：
+  - 原页面与上游数据库哈希没有变化；
+  - 性能差异与登记值完全一致，不接受未登记的新差异；
+  - 至少两个不同等级的完整实物素材配方相同；
+  - 用到的素材身份由该武器之外至少两条原始精确匹配路线共同支持；
+  - 所有能完整比较的配方没有矛盾，目标 family 也未被其他页面占用。
+
+新增对应只改变关联，不改原始数值。52处性能字段差异保存到 weapon_value_differences：
+42处会心差异、10处属性差异。双会心仍完整保留在 site_weapon_levels.affinity。
+
+目前上游1585条路线、10877个等级都有唯一站点对应。
+网站另有7条路线、34个等级没有对应：
+  ida/268759.html  星光之门
+  ida/268774.html  星光骑士ソード
+  ida/268789.html  【日】双星之红莲刃
+  ida/268804.html  ぐでたまフライパン
+  ida/268837.html  星光战车
+  ida/296398.html  气炎的太刀
+  ida/298481.html  【日】红莲炎斧
+这里只能断言它们在当前固定来源中没有对应，不直接将其全部标成“MHXX独占”。
+
+局部材料冲突
+
+ida/234849.html（暴风神切割者）LV1生产：
+  本地站与原日文站：轰龙牙 / 轟竜の牙 ×4
+  MHGU SQLite、Kiranico：Tigrex Claw ×4
+
+此前这个矛盾使“轰龙牙”的全局身份交集为空。现在将这一处约束从身份推断中排除，
+其余路线支持其对应 Tigrex Fang（1386）。该身份带 exclusions 状态，排除记录仍可查。
+原配方维持原样，recipe_checks明确报告材料不同，不能据此说配方已被纠正。
+
+两处材料引用注释
+
+  ida/288458.html LV1生产：“新红莲石 x4” → 真红莲石，ida/280911.html / Allfire Stone。
+  原日文站同样写“新紅蓮石”，所以这不是本次抽取产生的错字。
+  这项带别名修正性质的注释由完整配方、其他路线的素材身份与Kiranico素材用途共同支持。
+
+  ida/288520.html LV1生产：“青电主狩猎之证1 x1” → ida/301468.html / Boltreaver Hunter I。
+  名称在本地道具列表中精确对应，完整配方也吻合。
+
+引用存入 reviewed_recipe_items；原文仍在 site_recipes.unparsed_json / raw_text。
+annotated_recipe_items 和 weapon 查询同时展示 reference_origin、review_id，避免误称原HTML有链接。
+
+费用调查与处理策略
+
+已直接检查固定上游提交的 WeaponCursor.kt 与 WeaponDetailFragment.kt：
+creation_cost 和 upgrade_cost 被读入后直接显示为 z，没有在 Android 界面另乘1.5或2。
+因此不能通过给我们的导入器补一个“显示乘数”来解决所有差异。
+
+贝鲁纳大剑的Kiranico MHXX/MHGU页面同样列LV1价格850、LV11价格17000；
+本站为生产1275、强化22100。这反驳了“只因MHXX和MHGU不同”的简单解释，
+但这些数据可能共享上游，不能把多个相同网页当成游戏内正确值的多份独立证据。
+
+目前4830条原始费用差异分类为：
+  1008条  制作费用恰好1.5倍
+   124条  制作费用恰好2倍
+    11条  其他制作费用差异
+  3607条  网站标记[XX]等级的强化费用差异
+    75条  其他等级的强化费用差异
+     5条  上游没有同类型配方，不能将其0直接解释为“免费强化”
+
+这些是观察分类，不是已证明的游戏价格公式。目前没有获得足以判定全部价格的原始
+游戏表或实测，因此没有更改任何一方费用。原先4762条、现在4830条，是因为新增了
+29条武器身份而扩大了比较范围，并非抽取过程中又制造了68个错误。
+
+后续网站显示以原MHXX HTML费用为默认来源，并保留争议标签。
+mhxx_recipe_costs 提供 display_zenny、display_source、mhgu_stored_zenny、difference_pattern、review_status。
+如未来取得原始表或实测，再按来源明确记录修正，而不是全局乘一个看起来相近的系数。
+
+如何复现
+
+  .venv/bin/python scripts/data.py build
+  .venv/bin/python -m pytest -q
+  .venv/bin/python scripts/data.py check
+
+双会心示例：
+  .venv/bin/python scripts/data.py weapon 292565 --level 1 --limit 1
+材料冲突示例：
+  .venv/bin/python scripts/data.py weapon 234849 --level 1 --limit 1
+无链接材料注释示例：
+  .venv/bin/python scripts/data.py weapon 288458 --level 1 --limit 1
+
+复核记录：sources/reviews.json
+外部来源与调查结论：sources/research-notes.json
+完整输出：build/database/audit.json、differences.json、performance-differences.json、mhxx.sqlite
+
+仍未完成：本地怪物、任务、防具等类别的全面抽取，以及独立于两种来源编号的正式实体 schema。
+当前没有要求运行游戏或模拟器，也没有把审计库直接接入线上网站。
