@@ -13,10 +13,12 @@ from .pipeline import LEGACY_SITE_ROOT, ROOT
 from .homepage import build_homepage
 from .weapon_catalog import build_weapon_catalogs
 from .armor_catalog import build_armor_catalog
+from .monster_catalog import build_monster_catalog
+from .weapon_details import build_weapon_details
 from .static_api import DEFAULT_EXPORT, file_hash, json_bytes, safe_path, verify_export
 
 DEFAULT_FRONTEND = ROOT / "games/mhxx"
-WEB_FILES = ("index.html", "styles.css", "favicon.svg", "app.mjs", "home.mjs", "weapon-browser.mjs", "armor-browser.mjs", "quest-browser.mjs", "ui.mjs", "search-core.mjs", "search-worker.mjs", "data-client.mjs")
+WEB_FILES = ("index.html", "styles.css", "favicon.svg", "app.mjs", "home.mjs", "weapon-browser.mjs", "weapon-performance.mjs", "armor-browser.mjs", "quest-browser.mjs", "monster-browser.mjs", "ui.mjs", "search-core.mjs", "search-worker.mjs", "data-client.mjs")
 WEAPON_TYPES = dict(zip(
     ["Great Sword", "Long Sword", "Sword and Shield", "Dual Blades", "Hammer", "Hunting Horn", "Lance", "Gunlance", "Switch Axe", "Charge Blade", "Insect Glaive", "Light Bowgun", "Heavy Bowgun", "Bow"],
     ["大剑", "太刀", "片手剑", "双剑", "大锤", "狩猎笛", "长枪", "铳枪", "斩斧", "盾斧", "操虫棍", "轻弩", "重弩", "弓"]))
@@ -96,7 +98,9 @@ def build_frontend(output=DEFAULT_FRONTEND, source=DEFAULT_EXPORT, progress=prin
     entities = [json.loads((source / row["href"]).read_text()) for row in search["items"]]
     entries = [browse_entry(entity) for entity in entities]
     homepage = build_homepage(LEGACY_SITE_ROOT, entities, entries, report["dataset_revision"])
+    monster_catalog = build_monster_catalog(LEGACY_SITE_ROOT, entities, entries, homepage, report["dataset_revision"])
     weapon_catalogs = build_weapon_catalogs(LEGACY_SITE_ROOT, entities, report["dataset_revision"])
+    weapon_details = build_weapon_details(LEGACY_SITE_ROOT, entities, report["dataset_revision"])
     armor_catalog = build_armor_catalog(LEGACY_SITE_ROOT, entities, homepage, report["dataset_revision"])
     output.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix="mhxx-frontend-", dir=output.parent) as temp:
@@ -109,10 +113,14 @@ def build_frontend(output=DEFAULT_FRONTEND, source=DEFAULT_EXPORT, progress=prin
         shutil.copy2(ROOT / "web/home-redirect.html", staging / "index/index.html")
         (staging / "browse-index.json").write_bytes(json_bytes({"dataset_revision": report["dataset_revision"], "items": entries}))
         (staging / "home-data.json").write_bytes(json_bytes(homepage))
+        (staging / "monster-catalog.json").write_bytes(json_bytes(monster_catalog))
         (staging / "armor-catalog.json").write_bytes(json_bytes(armor_catalog))
         (staging / "weapon-catalogs").mkdir()
         for name, catalog in weapon_catalogs.items():
             (staging / "weapon-catalogs" / f"{name}.json").write_bytes(json_bytes(catalog))
+        (staging / "weapon-details").mkdir()
+        for name, detail in weapon_details.items():
+            (staging / "weapon-details" / f"{name}.json").write_bytes(json_bytes(detail))
         progress("Package static API and local map assets…")
         shutil.copytree(source, staging / "data/v1")
         for directory in ("map", "map_icon"):

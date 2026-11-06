@@ -13,6 +13,38 @@ const home = JSON.parse(await readFile(new URL('../games/mhxx/home-data.json', i
 const weapons = prepareWeapons(JSON.parse(await readFile(new URL('../games/mhxx/weapon-catalogs/great-sword.json', import.meta.url))));
 const armor = prepareArmor(JSON.parse(await readFile(new URL('../games/mhxx/armor-catalog.json', import.meta.url))));
 
+test('monster pages follow the homepage order without losing entries across page boundaries', () => {
+  const expected = home.sections['怪物'].groups.flatMap(group => group.links.map(link => link.route.id));
+  const before = index.map(entry => entry.id);
+  const actual = [];
+  for (let page = 1; page <= 3; page++) {
+    const result = queryIndex(index, { kind: 'monster', group: 'monster-2501', page });
+    assert.equal(result.total, 94);
+    actual.push(...result.items.map(entry => entry.id));
+  }
+  assert.equal(new Set(actual).size, 94);
+  assert.deepEqual(actual, expected);
+  assert.deepEqual(index.map(entry => entry.id), before, 'Sorting must not mutate the shared index');
+  const named = queryIndex(index, { kind: 'monster', group: 'monster-2501', sort: 'name', pageSize: 200 }).items;
+  assert.deepEqual(named.map(entry => entry.id), index.filter(entry => entry.kind === 'monster' && entry.monster_size === 'large').sort((a, b) => a.name.localeCompare(b.name, 'zh-CN', { numeric: true })).map(entry => entry.id));
+});
+
+test('monster family, size, names and saved filters combine and include small species', () => {
+  const query = options => queryIndex(index, { kind: 'monster', ...options });
+  assert.equal(query({ monsterFamily: 'fanged-beast' }).total, 16);
+  assert.equal(query({ monsterFamily: 'fanged-beast', group: 'monster-2501' }).total, 13);
+  assert.equal(query({ monsterFamily: 'fanged-beast', group: 'monster-2502' }).total, 3);
+  assert.equal(query({ monsterFamily: 'flying-wyvern', group: 'monster-2501' }).total, 21);
+  assert.equal(query({ monsterFamily: 'flying-wyvern', group: 'monster-2502' }).total, 0);
+  assert.equal(query({ group: 'monster-2502' }).total, 36);
+  assert.ok(query({ group: 'monster-2502' }).items.every(entry => entry.monster_family));
+  const alatreon = query({ monsterFamily: 'elder-dragon', query: '煌黑龙', saved: ['monster:site-2879'] });
+  assert.equal(alatreon.total, 1);
+  assert.equal(query({ monsterFamily: 'flying-wyvern', query: '煌黑龙' }).total, 0);
+  assert.equal(query({ monsterFamily: 'bird-wyvern', query: '白速龙王' }).items[0].monster_marker, '[再]');
+  assert.equal(query({ monsterFamily: 'not-a-family' }).total, 0);
+});
+
 test('quest categories, progression flags and types combine without guessing from names', () => {
   const totals = { village: 370, guild: 569, permit: 228, arena: 17, challenge: 20, event: 133 };
   for (const [questHub, count] of Object.entries(totals)) assert.equal(queryIndex(index, { kind: 'quest', questHub }).total, count);

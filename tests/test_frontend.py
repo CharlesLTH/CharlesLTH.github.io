@@ -36,6 +36,80 @@ def test_search_filters_paging_and_safe_rendering_against_the_real_index(package
     assert result.returncode == 0, result.stdout + result.stderr
 
 
+def test_weapon_details_cover_all_levels_and_preserve_bowgun_availability(package):
+    files = sorted((DEFAULT_FRONTEND / "weapon-details").glob("*.json"))
+    assert len(files) == 1592
+    level_count = bowgun_levels = 0
+    for path in files:
+        detail = json.loads(path.read_text())
+        entity = json.loads((DEFAULT_EXPORT / "weapons" / path.name).read_text())
+        assert detail["id"] == entity["id"]
+        assert detail["dataset_revision"] == package["dataset_revision"]
+        assert detail["source"]["sha256"] == entity["source"]["sha256"]
+        assert [level["level"] for level in detail["levels"]] == [level["level"] for level in entity["data"]["levels"]]
+        level_count += len(detail["levels"])
+        for level in detail["levels"]:
+            assert all(field["label"] != "其他性能" for field in level["fields"])
+            if "ammunition" in level:
+                bowgun_levels += 1
+                assert len(level["ammunition"]) == len({ammo["name"] for ammo in level["ammunition"]}) == 17
+                assert sum(len(ammo["loads"]) for ammo in level["ammunition"]) == 32
+                assert all(int(ammo["loaded"]) <= int(ammo["carried"]) for ammo in level["internal_ammo"])
+    assert (level_count, bowgun_levels) == (10911, 1421)
+    diablo = json.loads((DEFAULT_FRONTEND / "weapon-details/310279.json").read_text())["levels"][4]
+    assert {field["label"]: field["value"] for field in diablo["fields"]} == {
+        "攻击期待值（参考）": "356", "装填速度": "缓慢", "偏移（摇晃）": "左/大", "后座力": "中"}
+    ammo = {a["name"]: a["loads"] for a in diablo["ammunition"]}
+    assert [load["count"] for load in ammo["贯通弹"]] == [4, 5, 5]
+    assert [load["requires_skill"] for load in ammo["散弹"]] == [False, False, True]
+    assert all(load["requires_skill"] for load in ammo["扩散弹"])
+    assert ammo["火炎弹"] == [{"count": None, "requires_skill": False}]
+    assert diablo["internal_ammo"] == [{"name": "Lv1重击弹", "carried": "15", "loaded": "3"}, {"name": "Lv2重击弹", "carried": "15", "loaded": "3"}]
+    assert diablo["crouching_fire"] == ["Lv1贯通弹", "Lv2贯通弹", "Lv2通常弹"]
+    light = json.loads((DEFAULT_FRONTEND / "weapon-details/219234.json").read_text())["levels"][-1]
+    assert light["rapid_fire"] == [{"name": "碎石弹", "shots": "3", "recovery": "小"}]
+    bow = json.loads((DEFAULT_FRONTEND / "weapon-details/219233.json").read_text())["levels"][-1]
+    assert [charge["requires_skill"] for charge in bow["charges"]] == [False, False, False, True]
+    assert [coating["name"] for coating in bow["coatings"] if coating["available"]] == ["Lv1 强击瓶", "Lv2 强击瓶", "接击瓶", "染色瓶", "毒瓶"]
+    horn = json.loads((DEFAULT_FRONTEND / "weapon-details/219226.json").read_text())["levels"][-1]
+    assert horn["melodies"][1] == {"notes": ["白", "红", "红"], "effect": "攻击力強化【小】"}
+
+
+def test_monster_catalog_covers_every_size_and_keeps_raw_metadata(package):
+    catalog = json.loads((DEFAULT_FRONTEND / "monster-catalog.json").read_text())
+    home = json.loads((DEFAULT_FRONTEND / "home-data.json").read_text())
+    entries = {e["id"]: e for e in json.loads((DEFAULT_FRONTEND / "browse-index.json").read_text())["items"] if e["kind"] == "monster"}
+    records = catalog["monsters"]
+    assert catalog["dataset_revision"] == package["dataset_revision"]
+    assert len(records) == len(entries) == 130
+    assert {r["id"] for r in records} == entries.keys()
+    assert len(catalog["families"]) == 15
+    assert [r["order"] for r in records] == list(range(130))
+    large = [r["id"] for r in records if r["size"] == "large"]
+    assert len(large) == 94
+    assert len(records) - len(large) == 36
+    assert large == [link["route"]["id"] for group in home["sections"]["怪物"]["groups"] for link in group["links"]]
+    assert large[-1] == "monster:site-2879"  # Alatreon was missing from the old homepage.
+    for record in records:
+        original = json.loads((DEFAULT_EXPORT / "monsters" / (record["id"].split("-")[-1] + ".json")).read_text())
+        assert record["source_kind"] == original["data"]["metadata"]["种类"]
+        entry = entries[record["id"]]
+        assert entry["monster_family"] == record["family"]
+        assert entry["monster_order"] == record["order"]
+        assert entry["monster_marker"] == record["marker"]
+        assert entry["monster_size"] == record["size"]
+        assert ("monster-2501" if record["size"] == "large" else "monster-2502") in entry["groups"]
+    by_id = {r["id"]: r for r in records}
+    for key in ("monster:site-2830", "monster:site-2990"):
+        assert by_id[key]["source_kind"] == "-"
+        assert by_id[key]["family"] == "elder-dragon"
+        assert by_id[key]["classification_source"] == "index/index.html"
+    for family in catalog["families"]:
+        assert family["counts"] == {size: sum(r["family"] == family["key"] and r["size"] == size for r in records) for size in ("large", "small")}
+    for source, digest in catalog["source_pages"].items():
+        assert file_hash(Path(__file__).resolve().parents[1] / "games/mhxx_old" / source) == digest
+
+
 def test_map_task_index_uses_exact_destination_references(package):
     entries = json.loads((DEFAULT_FRONTEND / "browse-index.json").read_text())["items"]
     quests = [entry for entry in entries if entry["kind"] == "quest"]
@@ -108,8 +182,10 @@ def test_frontend_nested_http_paths_include_worker_module_data_and_local_assets(
                            ("index/index.html", "text/html"), ("styles.css", "text/css"), ("app.mjs", "text/javascript"),
                            ("home.mjs", "text/javascript"), ("home-data.json", "application/json"),
                            ("weapon-browser.mjs", "text/javascript"), ("weapon-catalogs/great-sword.json", "application/json"),
+                           ("weapon-performance.mjs", "text/javascript"), ("weapon-details/310279.json", "application/json"),
                            ("armor-browser.mjs", "text/javascript"), ("armor-catalog.json", "application/json"),
                            ("quest-browser.mjs", "text/javascript"),
+                           ("monster-browser.mjs", "text/javascript"), ("monster-catalog.json", "application/json"),
                            ("search-worker.mjs", "text/javascript"), ("browse-index.json", "application/json"),
                            ("data/v1/weapons/218099.json", "application/json"), ("assets/images/map/kodairin.gif", "image/gif")]:
             connection.request("GET", prefix + path)

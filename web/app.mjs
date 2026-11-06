@@ -1,8 +1,10 @@
 import { createDataClient } from './data-client.mjs';
 import { renderHome } from './home.mjs';
 import { prepareWeapons, renderWeaponBrowser } from './weapon-browser.mjs';
+import { renderWeaponPerformance } from './weapon-performance.mjs';
 import { prepareArmor, renderArmorBrowser, groupArmorPieces, renderArmorTable } from './armor-browser.mjs';
 import { questFilterState, questGroupHub, renderQuestFilters } from './quest-browser.mjs';
+import { renderMonsterFilters, renderMonsterTable, renderMonsterClassification } from './monster-browser.mjs';
 import { kinds, weaponTypes, ranks, recipeNames, icon, esc, num, percent, route, refLink, badge, empty, table, sharpness, elements, slots } from './ui.mjs';
 
 const api = createDataClient({ baseUrl: new URL('./data/v1/', document.baseURI).href });
@@ -14,8 +16,9 @@ const reduced = matchMedia('(prefers-reduced-motion: reduce)');
 const relationCache = new Map();
 let manifest, currentEntity, navigationEpoch = 0, workerId = 0, searchTimer, toastTimer, previewTimer;
 let lastList = '#home';
-let homePromise;
+let homePromise, monsterCatalogPromise;
 const weaponCatalogs = new Map();
+const weaponDetails = new Map();
 const collapsedWeapons = new Set();
 let weaponViewKey = '';
 let armorCatalog, armorViewKey = '';
@@ -38,6 +41,16 @@ function homeData() {
     return data;
   }).catch(error => { homePromise = undefined; throw error; });
   return homePromise;
+}
+function monsterData() {
+  if (!monsterCatalogPromise) monsterCatalogPromise = fetch(new URL('./monster-catalog.json', document.baseURI)).then(response => {
+    if (!response.ok) throw new Error('怪物分类读取失败，请刷新重试。');
+    return response.json();
+  }).then(data => {
+    if (data.dataset_revision !== manifest.dataset_revision) throw new Error('资料已经更新，请刷新页面后继续。');
+    return data;
+  }).catch(error => { monsterCatalogPromise = undefined; throw error; });
+  return monsterCatalogPromise;
 }
 function navigate(values, replace = false) { const hash = typeof values === 'string' ? values : route(values); if (replace) { history.replaceState(null, '', hash); renderRoute(); } else if (location.hash === hash) renderRoute(); else location.hash = hash; }
 function setPage(html, epoch) {
@@ -124,19 +137,21 @@ async function renderBrowse(r, epoch) {
   const navigation = kind === 'quest' || r.group ? await homeData() : null;
   const group = r.group ? navigation.categories[r.group] : null;
   if (r.group && (!group || group.kind !== kind)) throw new Error('这个分类不存在，请从资料首页重新选择。');
+  const monsterCatalog = kind === 'monster' ? await monsterData() : null;
+  if (monsterCatalog && r.family && !monsterCatalog.families.some(family => family.key === r.family)) throw new Error('这个怪物分类不存在，请从资料首页重新选择。');
   const questFilters = kind === 'quest' ? questFilterState(r, navigation) : {};
-  const result = await search({ query: r.q || '', kind, group: r.group || '', weaponType: r.wtype || '', questHub: questFilters.hub, questFlag: questFilters.flag, questType: questFilters.type, saved: r.saved ? saved : undefined, page: r.page || 1, sort: r.sort || 'default' });
+  const result = await search({ query: r.q || '', kind, group: r.group || '', weaponType: r.wtype || '', monsterFamily: kind === 'monster' ? r.family || '' : '', questHub: questFilters.hub, questFlag: questFilters.flag, questType: questFilters.type, saved: r.saved ? saved : undefined, page: r.page || 1, sort: r.sort || 'default' });
   if (result.revision !== manifest.dataset_revision) throw new Error('资料已经更新，请刷新页面后继续。');
   const title = r.saved ? '收藏夹' : r.q ? '搜索结果' : group?.label || kinds[kind] || '全部资料';
   document.title = `${title} · MHXX 资料库`;
   const subtitle = r.q ? `“${r.q}” · 找到 ${num(result.total)} 条资料` : r.saved ? '收藏常用的装备和素材，随时接着查。' : kind === 'weapon' ? '查看各等级性能、生产配方与强化所需素材。' : `浏览${kinds[kind] || '全部'}资料，点击名称查看详情与关联记录。`;
-  const filters = r.q || r.saved ? `<div class="filter-chips"><a class="filter-chip ${!kind ? 'active' : ''}" href="${route({ ...r, kind: '', group: '', page: '' })}">全部<small>${num(Object.values(result.counts).reduce((a, b) => a + b, 0))}</small></a>${Object.entries(kinds).map(([k, v]) => `<a class="filter-chip ${kind === k ? 'active' : ''}" href="${route({ ...r, kind: k, group: '', page: '', wtype: '' })}">${v}<small>${result.counts[k]}</small></a>`).join('')}</div>` : kind === 'weapon' ? `<div class="filter-chips"><a class="filter-chip ${!r.wtype ? 'active' : ''}" href="${route({ ...r, kind, wtype: '', page: '' })}">全部武器</a>${Object.entries(weaponTypes).map(([k, v]) => `<a class="filter-chip ${r.wtype === k ? 'active' : ''}" href="${route({ ...r, kind, wtype: k, page: '' })}">${v}</a>`).join('')}</div>` : '';
+  const filters = r.q || r.saved ? `<div class="filter-chips"><a class="filter-chip ${!kind ? 'active' : ''}" href="${route({ ...r, kind: '', group: '', family: '', page: '' })}">全部<small>${num(Object.values(result.counts).reduce((a, b) => a + b, 0))}</small></a>${Object.entries(kinds).map(([k, v]) => `<a class="filter-chip ${kind === k ? 'active' : ''}" href="${route({ ...r, kind: k, group: '', family: '', page: '', wtype: '' })}">${v}<small>${result.counts[k]}</small></a>`).join('')}</div>` : kind === 'weapon' ? `<div class="filter-chips"><a class="filter-chip ${!r.wtype ? 'active' : ''}" href="${route({ ...r, kind, wtype: '', page: '' })}">全部武器</a>${Object.entries(weaponTypes).map(([k, v]) => `<a class="filter-chip ${r.wtype === k ? 'active' : ''}" href="${route({ ...r, kind, wtype: k, page: '' })}">${v}</a>`).join('')}</div>` : '';
   const rows = result.items.map(e => [
     `<div class="record-name"><span class="record-symbol">${icon(e.kind)}</span><div><a href="${route({ id: e.id })}" data-preview="${esc(e.id)}">${esc(e.name)}</a><div class="record-subtitle">${esc(e.subtitle || kinds[e.kind])}</div></div></div>`,
     `<div class="catalog-info">${e.kind === 'weapon' ? `<span>攻击 ${num(e.attack_min)} → ${num(e.attack_max)}</span>${badge(`${e.level_count} 个等级`)}${sharpness(e.sharpness)}` : `<span>${esc(e.summary || '—')}</span>${badge(kinds[e.kind])}${e.extra ? `<small>${esc(e.extra)}</small>` : ''}`}</div>`,
     savedButton(e.id),
   ]);
-  setPage(`${group ? `<div class="breadcrumb"><a href="#home">资料首页</a>${icon('arrow')}<a href="${route({ kind })}">${kinds[kind]}</a>${icon('arrow')}<span>${esc(group.label)}</span></div>` : ''}<div class="page-heading"><div><h1>${esc(title)}</h1><p>${esc(subtitle)}</p></div><span class="badge green">MHXX</span></div>${filters ? `<div class="filter-row">${filters}</div>` : ''}${kind === 'quest' ? renderQuestFilters(r, navigation) : ''}<section class="panel" aria-label="资料列表"><div class="catalog-subhead"><div><strong>${kind === 'weapon' ? esc(weaponTypes[r.wtype] || '全部武器路线') : esc(title)}</strong><span class="muted">${num(result.total)} 条</span></div><select class="select" data-route-select="sort" aria-label="排序方式"><option value="default" ${!r.sort || r.sort === 'default' ? 'selected' : ''}>默认排序</option><option value="name" ${r.sort === 'name' ? 'selected' : ''}>名称排序</option>${kind === 'weapon' ? `<option value="attack" ${r.sort === 'attack' ? 'selected' : ''}>最高攻击力</option>` : ''}</select></div>${rows.length ? table(['名称', '概览 / 性能', '<span class="sr-only">收藏</span>'], rows, 'catalog-table') : empty(r.saved ? '还没有符合条件的收藏' : '没有找到相关资料', r.saved ? '点击资料旁的书签图标，即可保存在这个浏览器中。' : '试试更短的名称，或切换到“全部”分类。')}<div class="catalog-footer"><span>${result.total ? `${(result.page - 1) * result.pageSize + 1}–${Math.min(result.page * result.pageSize, result.total)} / ${num(result.total)} 条` : '0 条记录'}</span>${pagination(result.total, result.page, result.pageSize, { ...r, kind })}</div></section>${r.saved ? '<p class="notes" style="margin-top:14px">收藏仅保存在当前浏览器，不会上传。</p>' : ''}`, epoch);
+  setPage(`${group ? `<div class="breadcrumb"><a href="#home">资料首页</a>${icon('arrow')}<a href="${route({ kind })}">${kinds[kind]}</a>${icon('arrow')}<span>${esc(group.label)}</span></div>` : ''}<div class="page-heading"><div><h1>${esc(title)}</h1><p>${esc(subtitle)}</p></div><span class="badge green">MHXX</span></div>${filters ? `<div class="filter-row">${filters}</div>` : ''}${kind === 'quest' ? renderQuestFilters(r, navigation) : ''}${monsterCatalog ? renderMonsterFilters(r, monsterCatalog) : ''}<section class="panel" aria-label="资料列表"><div class="catalog-subhead"><div><strong>${kind === 'weapon' ? esc(weaponTypes[r.wtype] || '全部武器路线') : esc(title)}</strong><span class="muted">${num(result.total)} 条</span></div><select class="select" data-route-select="sort" aria-label="排序方式"><option value="default" ${!r.sort || r.sort === 'default' ? 'selected' : ''}>${kind === 'monster' ? '主页顺序' : '默认排序'}</option><option value="name" ${r.sort === 'name' ? 'selected' : ''}>名称排序</option>${kind === 'weapon' ? `<option value="attack" ${r.sort === 'attack' ? 'selected' : ''}>最高攻击力</option>` : ''}</select></div>${rows.length ? (monsterCatalog ? renderMonsterTable(result.items, r, monsterCatalog, savedButton) : table(['名称', '概览 / 性能', '<span class="sr-only">收藏</span>'], rows, 'catalog-table')) : empty(r.saved ? '还没有符合条件的收藏' : '没有找到相关资料', r.saved ? '点击资料旁的书签图标，即可保存在这个浏览器中。' : '试试更短的名称，或切换到“全部”分类。')}<div class="catalog-footer"><span>${result.total ? `${(result.page - 1) * result.pageSize + 1}–${Math.min(result.page * result.pageSize, result.total)} / ${num(result.total)} 条` : '0 条记录'}</span>${pagination(result.total, result.page, result.pageSize, { ...r, kind })}</div></section>${r.saved ? '<p class="notes" style="margin-top:14px">收藏仅保存在当前浏览器，不会上传。</p>' : ''}`, epoch);
 }
 
 function header(entity, subtitle = '') {
@@ -149,15 +164,28 @@ function recipeCard(recipe, title) {
   return `<section class="panel"><div class="panel-heading"><h2>${esc(title || recipeNames[recipe.kind] || recipe.kind || '所需素材')}</h2>${badge('所需素材')}</div><div class="panel-body"><div class="recipe-list">${(recipe.ingredients || []).map(i => `<div class="material-row">${refLink(i.item, i.item?.name || i.label)}<span class="qty">× ${num(i.quantity)}</span></div>`).join('')}${(recipe.material_points || []).map(i => `<div class="material-row"><span>${esc(i.label)}</span><span class="qty">${num(i.points)} 点</span></div>`).join('')}${!(recipe.ingredients?.length || recipe.material_points?.length) ? '<p class="notes">暂无具体素材记录。</p>' : ''}</div><div class="recipe-cost"><span>所需费用</span><strong>${num(recipe.money)} <span class="unit">z</span></strong></div>${difference ? `<div class="notice">费用数值待核对。</div>` : ''}${recipe.unparsed?.length ? `<p class="notes" style="margin-top:10px">${esc(recipe.unparsed.join(' / '))}</p>` : ''}</div></section>`;
 }
 
-function renderWeapon(entity, r, epoch) {
+async function renderWeapon(entity, r, epoch) {
   const data = entity.data;
   const level = data.levels.find(l => l.level === Number(r.level)) || data.levels[0];
+  if (!weaponDetails.has(entity.id)) {
+    const key = entity.id.split('site-')[1];
+    weaponDetails.set(entity.id, fetch(new URL(`./weapon-details/${key}.json`, document.baseURI)).then(response => {
+      if (!response.ok) throw new Error('武器性能详情读取失败，请刷新重试。');
+      return response.json();
+    }).then(detail => {
+      if (detail.id !== entity.id || detail.dataset_revision !== manifest.dataset_revision) throw new Error('资料已经更新，请刷新页面后继续。');
+      return detail;
+    }).catch(error => { weaponDetails.delete(entity.id); throw error; }));
+  }
+  const detail = (await weaponDetails.get(entity.id)).levels.find(entry => entry.level === level.level);
+  if (!detail) throw new Error('这个等级的性能详情缺失，请刷新重试。');
+  if (epoch !== navigationEpoch) return;
   const stats = `<div class="stats"><div class="stat"><span>攻击力</span><strong>${num(level.attack)}</strong></div><div class="stat"><span>会心率</span><strong>${esc(level.affinity ?? '—')}<span class="unit">%</span></strong></div><div class="stat"><span>属性</span>${elements(level)}</div><div class="stat"><span>孔槽</span>${slots(level.slots)}</div></div>`;
   const sharp = level.sharpness_px?.length ? `<div class="panel-body" style="border-top:1px solid var(--line)">${level.sharpness_px.map((s, i) => `<div class="sharpness-line"><span>${['基础斩味', '匠 +1', '匠 +2'][i]}</span>${sharpness(s)}</div>`).join('')}</div>` : '';
-  const performance = level.performance?.slice(1).filter(Boolean).join(' / ');
+  const performance = renderWeaponPerformance(level, detail);
   const rows = data.levels.map(l => [`<button data-level="${l.level}" aria-label="选择 ${esc(l.name)} LV ${l.level}" ${l.level === level.level ? 'aria-current="true"' : ''}>${esc(l.name)}<small>Lv ${l.level}</small></button>`, num(l.attack), `<div class="weapon-performance"><span class="weapon-affinity">会心 ${esc(l.affinity ?? '—')}%</span>${elements(l)}${l.defense ? `<small>防御 +${num(l.defense)}</small>` : ''}</div>`, sharpness(l.sharpness_px?.[0]), slots(l.slots)]);
   const derivation = `<section class="panel"><div class="panel-heading"><h2>关联派生</h2><a class="home-all" href="${route({ kind: 'weapon', wtype: data.weapon_type, focus: entity.id, mode: 'branch' })}">打开完整派生树 ${icon('arrow')}</a></div><div class="panel-body weapon-derivations">${(data.parents || []).map(p => `<p>由 ${refLink(p.weapon, p.weapon.name, { level: p.level })} Lv ${p.level} 派生</p>`).join('')}${(data.branches || []).map(b => `<p class="${b.level === level.level ? 'current' : ''}"><span>Lv ${b.level} →</span>${refLink(b.target, b.label, { level: b.target_level })}</p>`).join('') || '<p class="notes">此路线没有其他武器分支。</p>'}</div></section>`;
-  const main = `<div class="stack"><section class="panel"><div class="panel-heading"><h2>${esc(level.name)}</h2>${badge(`LV ${level.level}`, 'green')}</div><div class="panel-body"><div class="level-picker" aria-label="武器等级">${data.levels.map(l => `<button class="level-button ${l.level === level.level ? 'active' : ''}" data-level="${l.level}" aria-pressed="${l.level === level.level}">Lv ${l.level}</button>`).join('')}</div></div>${stats}${sharp}<div class="panel-caption">防御加成 ${num(level.defense)}${level.performance_differences.length ? ' · 部分性能数值待核对' : ''}</div></section><section class="panel"><div class="panel-heading"><h2>强化路线</h2><span class="muted" style="font-size:11px">点击等级查看配方</span></div>${table(['武器 / 等级', '攻击', '性能', '基础斩味', '孔'], rows, 'level-table weapon-table')}</section>${derivation}${performance ? `<details class="panel source-details"><summary>${icon('info')}等级性能详情</summary><div class="panel-body">${esc(performance)}</div></details>` : ''}</div>`;
+  const main = `<div class="stack"><section class="panel"><div class="panel-heading"><h2>${esc(level.name)}</h2>${badge(`LV ${level.level}`, 'green')}</div><div class="panel-body"><div class="level-picker" aria-label="武器等级">${data.levels.map(l => `<button class="level-button ${l.level === level.level ? 'active' : ''}" data-level="${l.level}" aria-pressed="${l.level === level.level}">Lv ${l.level}</button>`).join('')}</div></div>${stats}${sharp}<div class="panel-caption">防御加成 ${num(level.defense)}${level.performance_differences.length ? ' · 部分性能数值待核对' : ''}</div></section>${performance}<section class="panel"><div class="panel-heading"><h2>强化路线</h2><span class="muted" style="font-size:11px">点击等级查看配方</span></div>${table(['武器 / 等级', '攻击', '性能', '基础斩味', '孔'], rows, 'level-table weapon-table')}</section>${derivation}</div>`;
   setPage(`${header(entity, `${weaponTypes[data.weapon_type] || data.weapon_type} · ${data.levels.length} 个强化等级`)}<div class="detail-grid"><div class="detail-main">${main}</div><aside class="detail-aside">${level.recipes.map(recipe => recipeCard(recipe)).join('') || `<section class="panel">${empty('暂无配方记录')}</section>`}${recentPanel(entity)}</aside></div>`, epoch);
   if (epoch === navigationEpoch) page.querySelectorAll(`[data-level="${level.level}"]`).forEach(button => button.closest('tr')?.classList.add('selected-row'));
 }
@@ -257,7 +285,7 @@ async function renderOther(entity, r, epoch) {
   let body = '';
   if (entity.kind === 'monster') {
     const headers = ['切', '打', '弾', '火', '水', '雷', '冰', '龙', '气绝'];
-    body = `<section class="panel"><div class="panel-heading"><h2>基本信息</h2></div><div class="panel-body">${keyValues(Object.entries(d.metadata).filter(([, v]) => typeof v !== 'object'))}</div></section><section class="panel hitzone-panel"><div class="panel-heading"><h2>部位肉质</h2><span class="notes">括号值为特殊状态</span></div>${table(['部位', ...headers], d.hitzones.map(h => [esc(h.body_part), ...headers.map(k => esc(h.values[k] ?? '—'))]), 'hitzone-table')}</section>${notes(d)}`;
+    body = `<section class="panel"><div class="panel-heading"><h2>基本信息</h2></div><div class="panel-body">${renderMonsterClassification(entity, await monsterData())}${keyValues(Object.entries(d.metadata).filter(([, v]) => typeof v !== 'object'))}</div></section><section class="panel hitzone-panel"><div class="panel-heading"><h2>部位肉质</h2><span class="notes">括号值为特殊状态</span></div>${table(['部位', ...headers], d.hitzones.map(h => [esc(h.body_part), ...headers.map(k => esc(h.values[k] ?? '—'))]), 'hitzone-table')}</section>${notes(d)}`;
   } else if (entity.kind === 'quest') {
     body = `<section class="panel"><div class="panel-heading"><h2>任务信息</h2><span>${d.flags.map(f => badge(f, 'green')).join(' ')}</span></div><div class="panel-body">${keyValues([['主任务', d.objective], ['副任务', d.sub_objective], ['目的地', d.destination_text], ['时间限制', d.time_minutes == null ? null : `${d.time_minutes} 分钟`], ['任务报酬', d.reward_zenny == null ? null : `${num(d.reward_zenny)} z`], ['契约金', d.fee_zenny == null ? null : `${num(d.fee_zenny)} z`]])}<div style="margin-top:16px;display:flex;gap:16px;flex-wrap:wrap">${d.references.filter(ref => ref.target).map(ref => refLink(ref.target, ref.label)).join('')}</div></div></section>`;
   } else if (entity.kind === 'skill') {
@@ -303,7 +331,7 @@ async function renderRoute() {
       if (epoch !== navigationEpoch) return;
       currentEntity = entity;
       document.title = `${entity.name} · MHXX 资料库`;
-      if (entity.kind === 'weapon') renderWeapon(entity, r, epoch);
+      if (entity.kind === 'weapon') await renderWeapon(entity, r, epoch);
       else if (entity.kind === 'item') await renderItem(entity, r, epoch);
       else if (entity.kind === 'map') await renderMap(entity, r, epoch);
       else await renderOther(entity, r, epoch);
